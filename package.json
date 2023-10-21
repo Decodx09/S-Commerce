@@ -1,0 +1,27 @@
+{
+  "name": "s-commerce",
+  "version": "1.0.0",
+  "description": "social commerce",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "shivansh sukhija",
+  "license": "ISC",
+  "dependencies": {
+    "bcrpyt": "^2.0.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-sanitizer": "^1.0.6",
+    "express-session": "^1.17.3",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.0",
+    "nodemon": "^3.0.1"
+  }
+}
