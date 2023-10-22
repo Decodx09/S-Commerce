@@ -76,6 +76,21 @@ router.get('/getfollowers/:id', async (req, res) => {
   }
 });
 
+router.get('/followings/:id' , async (req , res) => {
+  const userId = req.params.id;
+  try{
+    const user = await User.findById(userId).populate('followings');
+    if(!user){
+      return res.status(404).json({message : "No Followings"});
+    }
+    const followings = user.followings;
+    res.status(200).json(followings);
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message : "An Internal Error Occurred"});
+  }
+})
+
 router.post('/register', async (req, res) => {
 try {
     const user = await User.findOne({email: req.body.email});
