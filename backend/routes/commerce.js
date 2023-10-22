@@ -3,20 +3,33 @@ import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 const router = express.Router();
 
-router.get('/total' , async (req , res) => {
+
+router.post('/' , async (req , res) => {
   try{
-    const user = await User.aggregate([
-      {$match : {Admin: true}},
-      {$group : {_id : null , total : {$sum : "$Admin"}}}
-    ]);
-    if(user.length > 0){
-      res.status(200).send(user[0]);
-    }else{
-      res.status(404).send({message : 'No Matching Records Found'});
+
+  }catch(error){
+    res.status(500).send({message : "An Internal Server Error has Occurred"});
+  }
+})
+
+router.post('/addtocart/:id' , async (req , res) => {
+  const userId = req.params.id;
+  try{
+    const updateuser = await User.findByIdAndUpdate(
+        userId,
+        {$inc: {cart : 1}},
+        {new : true}
+    );
+
+    if(!updateuser){
+      res.status(404).send({message : "User Not Found"});
     }
+
+    res.status(200).send(updateuser);
+
   }catch(error){
     console.log(error);
-    res.status(500).send({message : "An Internal Error Occured"})
+    res.status(500).send({message : "An Internal Server Error has Occured"});
   }
 })
 
