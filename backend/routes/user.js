@@ -9,12 +9,43 @@ dotenv.config();
 
 const JWT_SECRET = 'shivansh';
 
+router.get('/Admins' , async (req , res) => {
+  try{
+    const user = await User.find({Admin : true});
+    res.status(200).send(user);
+  }catch(error){
+    res.status(500).send({message : "An Internal Error has Occurred"});
+  }
+})
+
+router.get('/total' , async (req , res) => {
+  try{
+    const user = await User.aggregate([
+      {$match : {Admin: true}},
+      {$group : {_id : null , Admins : {$sum : "$Admin"}}}
+    ]);
+    if(user.length > 0){
+      res.status(200).send(user[0]);
+    }else{
+      res.status(404).send({message : 'No Matching Records Found'});
+    }
+  }catch(error){
+    console.log(error);
+    res.status(500).send({message : "An Internal Error Occured"})
+  }
+})
+
 router.get('/' , async (req , res) => {
   let user;
   const search = req.query.search || '';
   try{
     if(search){
-      user = await User.find({ FirstName: { $regex: new RegExp(search, 'i') } });
+      user = await User.find({
+        $or :[
+         { FirstName: { $regex: new RegExp(search, 'i') }},
+        { LastName: {$regex: new RegExp(search, 'i')}}
+       ]}
+        );
     }else {
       user = await User.find();
       if(user.length === 0){

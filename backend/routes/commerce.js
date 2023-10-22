@@ -1,13 +1,30 @@
-import express from 'express';
-import {Product} from '../models/product.js';
+import express, { response } from 'express';
+import { Product } from '../models/product.js';
+import { User } from '../models/user.js';
 const router = express.Router();
+
+router.get('/total' , async (req , res) => {
+  try{
+    const user = await User.aggregate([
+      {$match : {Admin: true}},
+      {$group : {_id : null , total : {$sum : "$Admin"}}}
+    ]);
+    if(user.length > 0){
+      res.status(200).send(user[0]);
+    }else{
+      res.status(404).send({message : 'No Matching Records Found'});
+    }
+  }catch(error){
+    console.log(error);
+    res.status(500).send({message : "An Internal Error Occured"})
+  }
+})
 
 router.post('/:id', async (req, res) => {
     const {id} = req.params;
     const product = new Product(req.body);
     product.userId = id;
     try {
-      await product.save();
       res.status(200).send(product);
     } catch (error) {
       console.log(error);
