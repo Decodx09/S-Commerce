@@ -22,7 +22,7 @@ router.get('/total' , async (req , res) => {
   try{
     const user = await User.aggregate([
       {$match : {Admin: true}},
-      {$group : {_id : null , Admins : {$sum : "$Admin"}}}
+      {$group : {_id : null , Admins : {$sum : "$Admins"}}}
     ]);
     if(user.length > 0){
       res.status(200).send(user[0]);
