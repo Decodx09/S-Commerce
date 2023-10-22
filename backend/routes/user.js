@@ -149,10 +149,10 @@ router.post('/logout' , async (req , res) => {
 router.put("/:id/follow", async (req, res) => {
   if (req.body._id !== req.params.id) {
     try {
-      const user = await User.findById(req.params._id);
-      const currentUser = await User.findById(req.body._id);
+      const userToFollow = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.id);
 
-      if (!user.followers.includes(req.body._id)) {
+      if (!userToFollow.followers.includes(req.body._id)) {
         await User.findOneAndUpdate(
           { _id: req.params.id },
           { $push: { followers: req.body._id } }
@@ -160,20 +160,21 @@ router.put("/:id/follow", async (req, res) => {
 
         await User.findOneAndUpdate(
           { _id: req.body._id },
-          { $push: { followings: req.params._id } }
+          { $push: { followings: req.params.id } }
         );
 
-        res.status(200).json("User has been followed.");
+        res.status(200).json({ message: "User has been followed." });
       } else {
-        res.status(403).json("You already follow this user.");
+        res.status(403).json({ message: "You already follow this user." });
       }
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({ error: "Internal server error", message: err.message });
     }
   } else {
-    res.status(403).json("You can't follow yourself.");
+    res.status(403).json({ message: "You can't follow yourself." });
   }
 });
+
 
 router.post('/forgetpassword' , async (req , res) => {
   try{
