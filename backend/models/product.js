@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
   tags: { type: [String] },
   images: { type: [String] },
   quantity: { type: Number, required: true },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  userId: { type: ObjectId, ref: "User" , required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
