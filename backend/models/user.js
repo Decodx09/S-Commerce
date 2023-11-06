@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     items : [{type: mongoose.Schema.Types.ObjectId, ref:'Product'}],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    checkout : {type: Number, required : false}
 });
 
 export const User = mongoose.model("User" , userSchema);

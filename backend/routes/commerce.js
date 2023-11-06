@@ -1,12 +1,15 @@
 import express, { response } from 'express';
 import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
+import { Post } from '../models/post.js';
 
 const router = express.Router();
 
 router.post('/addtocart/:id', async (req, res) => {
   const userId = req.params.id;
   const productId = req.body.item;
+  const price = productId.price;
+
   try {
     console.log("Received userId:", userId);
     console.log("Received productId:", productId);
@@ -16,6 +19,7 @@ router.post('/addtocart/:id', async (req, res) => {
       {
         $inc: { cart: 1 },
         $push: { items: productId },
+        $addToSet: { checkout: price },
       },
       { new: true }
     );
@@ -24,6 +28,22 @@ router.post('/addtocart/:id', async (req, res) => {
       res.status(404).send({ message: "User Not Found" });
     } else {
       res.status(200).send(updatedUser);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "An Internal Server Error has Occurred" });
+  }
+});
+
+router.get('/checkout/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).send({ message: "User Not Found" });
+    } else {
+      res.status(200).send(user.checkout);
     }
   } catch (error) {
     console.log(error);
@@ -44,14 +64,31 @@ router.post('/:id', async (req, res) => {
     }
   });
 
+  router.post('/post/:id', async (req, res) => {
+    const { id } = req.params;
+    const post = new Post(req.body);
+    post.userId = id;
+  
+    try {
+      res.status(200).send(post);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: 'An Internal Error has Occurred' });
+    }
+  });
+
 router.get('/:id' , async (req , res) => {
     const userId = req.params.id;
     try{
         const products = await Product.find({userId});
+        const posts = await Post.find({userId});
+        if (!posts) {
+          return res.status(404).send({ message: 'No posts uploaded' });
+        }
         if(!products){
             res.status(404).send({message : "No Product Uploaded"});
         }
-        res.status(200).send(products);
+        res.status(200).send({posts , products});
     }catch(error){
         console.log(error);
         res.status(500).send({message : "Internal Server Error"});
