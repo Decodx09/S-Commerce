@@ -151,6 +151,29 @@ router.post('/post/like/:id', async (req, res) => {
   }
 });
 
+router.post('/comment/:id' , async (req , res) => {
+  const comment = req.body;
+  const postId = req.params.id;
+
+  const post = await Post.findById(postId);
+  
+  try{
+    if(!post){
+      return res.status(404).send({message : 'Post does not exist'});
+    }
+
+    if(!post.comments){
+      post.comments = []
+    }
+    
+    post.comments.push(comment);
+    await post.save();
+    res.status(200).send(post);
+  }catch(error){
+    console.log(error);
+    res.status(500).send({message : "An Error Occurred"});
+  }
+})
 
 // Bunnylikescarrot1!
 
