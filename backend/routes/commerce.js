@@ -53,30 +53,31 @@ router.get('/checkout/:id', async (req, res) => {
 
 
 router.post('/:id', async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     const product = new Product(req.body);
     product.userId = id;
     try {
+      await product.save();
       res.status(200).send(product);
     } catch (error) {
       console.log(error);
-      res.status(500).send({ message: 'An internal error occurred while saving the product' });
+      res.status(500).send({ message: 'An Internal Error Occurred While Saving The Product' });
     }
   });
 
-  router.post('/post/:id', async (req, res) => {
+router.post('/post/:id' , async (req , res) => {
     const { id } = req.params;
     const post = new Post(req.body);
-    post.userId = id;
-  
-    try {
+    post.userId = id; // Set the userId property on the 'post' instance
+    try{
+      await post.save();
       res.status(200).send(post);
-    } catch (error) {
+    }catch(error){
       console.log(error);
-      res.status(500).send({ message: 'An Internal Error has Occurred' });
+      res.status(500).send({message : "Error Occurred"});
     }
-  });
-
+})
+  
 router.get('/:id' , async (req , res) => {
     const userId = req.params.id;
     try{
@@ -123,5 +124,34 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/post/like/:id', async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.query.userid;
+
+  try {
+    const post = await Post.findById(postId);
+    const user = await User.findById(userId);
+
+    if (!post || !user) {
+      return res.status(404).send({ message: 'Post or user not found' });
+    }
+    if (!Array.isArray(post.likes)) {
+      post.likes = [];
+    }
+    if (post.likes.includes(user.id)) {
+      post.likes = post.likes.filter(likedUserId => likedUserId !== user.id);
+    } else {
+      post.likes.push(user.id);
+    }
+    await post.save();
+    res.status(200).send(post);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'An internal server error has occurred' });
+  }
+});
+
+
+// Bunnylikescarrot1!
 
 export default router;
