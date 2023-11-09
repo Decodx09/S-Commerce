@@ -175,7 +175,6 @@ router.put("/:id/follow", async (req, res) => {
   }
 });
 
-
 router.post('/forgetpassword' , async (req , res) => {
   try{
 

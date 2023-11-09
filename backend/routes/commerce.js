@@ -51,7 +51,6 @@ router.get('/checkout/:id', async (req, res) => {
   }
 });
 
-
 router.post('/:id', async (req, res) => {
     const { id } = req.params;
     const product = new Product(req.body);
@@ -152,7 +151,7 @@ router.post('/post/like/:id', async (req, res) => {
 });
 
 router.post('/comment/:id' , async (req , res) => {
-  const comment = req.body;
+  const comment = req.body.comment;
   const postId = req.params.id;
 
   const post = await Post.findById(postId);
