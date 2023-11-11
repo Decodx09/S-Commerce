@@ -9,7 +9,7 @@ import session from 'express-session';
 import mysql from 'mysql';
 import http from 'http';
 import path from 'path';
-import {Server} from 'socket.io';
+import { Server } from 'socket.io';
 
 const app = express();
 const server = http.createServer(app);

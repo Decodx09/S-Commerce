@@ -76,20 +76,20 @@ router.get('/getfollowers/:id', async (req, res) => {
   }
 });
 
-router.get('/followings/:id' , async (req , res) => {
+router.get('/followings/:id', async (req, res) => {
   const userId = req.params.id;
-  try{
-    const user = await User.findById(userId).populate('followings');
-    if(!user){
-      return res.status(404).json({message : "No Followings"});
+  try {
+    const user = await User.findById(userId).populate('followings', 'FirstName');
+    if (!user) {
+      return res.status(404).json({ message: "No Followings" });
     }
-    const followings = user.followings;
+    const followings = user.followings.map(following => following.name);
     res.status(200).json(followings);
-  }catch(error){
+  } catch (error) {
     console.log(error);
-    res.status(500).json({message : "An Internal Error Occurred"});
+    res.status(500).json({ message: "An Internal Error Occurred" });
   }
-})
+});
 
 router.post('/register', async (req, res) => {
 try {
@@ -146,7 +146,7 @@ router.post('/logout' , async (req , res) => {
     }
 })
 
-router.put("/:id/follow", async (req, res) => {
+router.put("/follow/:id", async (req, res) => {
   if (req.body._id !== req.params.id) {
     try {
       const userToFollow = await User.findById(req.params.id);
