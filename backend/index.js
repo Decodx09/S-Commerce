@@ -1,25 +1,50 @@
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import express from 'express';
-import { PORT, mongoDURL } from './config.js';
-import commerce from './routes/commerce.js';
-import user from './routes/user.js';
-import cors from 'cors';
 import session from 'express-session';
-import mysql from 'mysql';
 import http from 'http';
 import path from 'path';
 import { Server } from 'socket.io';
+import mysql from 'mysql';
+import redis from 'redis';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import { PORT, mongoDURL } from './config.js';
+import commerce from './routes/commerce.js';
+import user from './routes/user.js';
+import rental from './routes/rental.js';
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// Redis client setup
+const redisClient = redis.createClient(); // Initialize the Redis client
+
+const cacheMiddleware = (req, res, next) => {
+  const key = req.originalUrl || req.url;
+
+  // Check the cache
+  redisClient.get(key, (err, data) => {
+    if (err) {
+      console.error(`Error checking cache: ${err}`);
+      next();
+    }
+
+    if (data) {
+      // Data found in cache, send it back
+      res.json(JSON.parse(data));
+    } else {
+      // Data not found in cache, proceed to the next middleware
+      next();
+    }
+  });
+};
+
 io.on('connection', (socket) => {
-    socket.on('user-message' , (message) => {
-        console.log("A new User message has arrived" , message);
-        io.emit("message",message);
-    })
+  socket.on('user-message', (message) => {
+    console.log('A new User message has arrived', message);
+    io.emit('message', message);
+  });
 });
 
 app.use(express.json());
@@ -33,11 +58,13 @@ const sqlConnection = mysql.createConnection({
   database: 'my_database',
 });
 
-app.use(session({
-  secret: 'shivansh',
-  resave: false,
-  saveUninitialized: true,
-}));
+app.use(
+  session({
+    secret: 'shivansh',
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 dotenv.config();
 
@@ -59,9 +86,22 @@ app.post('/shivansh', async (req, res) => {
   }
 });
 
-app.get('/getproduct/:id', async (req, res) => {
+app.get('/getproduct/:id', cacheMiddleware, async (req, res) => {
   try {
     const id = req.params.id;
+
+    const cachedData = await new Promise((resolve, reject) => {
+      redisClient.get(`product:${id}`, (err, data) => {
+        if (err) reject(err);
+        else resolve(data);
+      });
+    });
+
+    if (cachedData) {
+      res.json(JSON.parse(cachedData));
+      return;
+    }
+
     const product = await new Promise((resolve, reject) => {
       sqlConnection.query('SELECT * FROM products WHERE id = ?', [id], (error, results) => {
         if (error) reject(error);
@@ -74,6 +114,7 @@ app.get('/getproduct/:id', async (req, res) => {
       return;
     }
 
+    redisClient.setex(`product:${id}`, 3600, JSON.stringify(product));
     res.json(product);
   } catch (error) {
     console.error(error);
@@ -83,6 +124,7 @@ app.get('/getproduct/:id', async (req, res) => {
 
 app.use('/product', commerce);
 app.use('/user', user);
+app.use('/rental', rental);
 
 mongoose
   .connect(mongoDURL, {
@@ -99,11 +141,3 @@ mongoose
     console.error(error);
     process.exit(1);
   });
-
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({
-    message: 'Internal Server Error',
-    error: err.message,
-  });
-});

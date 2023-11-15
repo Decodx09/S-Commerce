@@ -14,4 +14,13 @@ const userSchema = new mongoose.Schema({
     checkout : {type: Number, required : false}
 });
 
+userSchema.virtual('id').get(function () {
+    return this._id.toHexString();
+});
+
+userSchema.set('toJSON', {
+    virtuals: true,
+});
+
+
 export const User = mongoose.model("User" , userSchema);

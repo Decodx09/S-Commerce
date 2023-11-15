@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const router = express.Router();
 import dotenv from 'dotenv';
+// import errorHandler from '../middlewares/errorHandler';
+
 
 dotenv.config();
 
@@ -62,8 +64,7 @@ router.get('/' , async (req , res) => {
 router.get('/getfollowers/:id', async (req, res) => {
   const userId = req.params.id;
   try {
-    const user = await User.findById(userId).populate('followers');
-    
+    const user = await User.findById(userId).populate('followers' , 'FirstName');
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -83,8 +84,8 @@ router.get('/followings/:id', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "No Followings" });
     }
-    const followings = user.followings.map(following => following.name);
-    res.status(200).json(followings);
+    const followers = user.followings;
+    res.status(200).json(followers);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "An Internal Error Occurred" });

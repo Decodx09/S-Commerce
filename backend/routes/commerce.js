@@ -2,42 +2,76 @@ import express, { response } from 'express';
 import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 import { Post } from '../models/post.js';
+import { OrderItem } from '../models/orderitem.js';
 
 const router = express.Router();
 
 router.post('/addtocart/:id', async (req, res) => {
   const userId = req.params.id;
   const productId = req.body.item;
-  const price = productId.price;
-
+  const quantity = parseInt(req.query.quantity, 10);
+  
   try {
     console.log("Received userId:", userId);
     console.log("Received productId:", productId);
+
+    if (isNaN(quantity) || quantity <= 0) {
+      return res.status(400).json({ error: "Invalid Quantity" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log("User Doesn't Exist");
+      return res.status(404).json({ message: "User Doesn't Exist" });
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      console.log("Product Doesn't Exist");
+      return res.status(404).json({ message: "Product Doesn't Exist" });
+    }
+
+    const price = product.price;
+
+    console.log("Price:", price);
+    console.log("Quantity:", quantity);
+
+    const totalPrice = (price * quantity);
+
+    // Create a new OrderItem and save it to obtain the _id
+    const newOrderItem = new OrderItem({
+      quantity: quantity,
+      product: productId,
+    });
+
+    const orderItemResolved = await newOrderItem.save();
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
         $inc: { cart: 1 },
-        $push: { items: productId },
-        $addToSet: { checkout: price },
+        $push: { items: orderItemResolved._id },
+        $addToSet: { checkout: totalPrice },
       },
       { new: true }
     );
 
     if (!updatedUser) {
-      res.status(404).send({ message: "User Not Found" });
+      return res.sendStatus(404);
     } else {
-      res.status(200).send(updatedUser);
+      return res.status(200).json({ totalPrice });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: "An Internal Server Error has Occurred" });
+    console.error(error);
+    return res.status(500).send("An Internal Server Error has Occurred");
   }
 });
 
+
+// Function to check if a string is a valid MongoDB ObjectId
+
 router.get('/checkout/:id', async (req, res) => {
   const userId = req.params.id;
-
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -67,7 +101,7 @@ router.post('/:id', async (req, res) => {
 router.post('/post/:id' , async (req , res) => {
     const { id } = req.params;
     const post = new Post(req.body);
-    post.userId = id; // Set the userId property on the 'post' instance
+    post.userId = id; 
     try{
       await post.save();
       res.status(200).send(post);
@@ -123,6 +157,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 router.post('/post/like/:id', async (req, res) => {
   const postId = req.params.id;
   const userId = req.query.userid;
@@ -134,14 +169,18 @@ router.post('/post/like/:id', async (req, res) => {
     if (!post || !user) {
       return res.status(404).send({ message: 'Post or user not found' });
     }
+
     if (!Array.isArray(post.likes)) {
       post.likes = [];
     }
-    if (post.likes.includes(user.id)) {
-      post.likes = post.likes.filter(likedUserId => likedUserId !== user.id);
+
+    const userIndex = post.likes.indexOf(user.FirstName);
+    if (userIndex !== -1) {
+      post.likes.splice(userIndex, 1);
     } else {
-      post.likes.push(user.id);
+      post.likes.push(user.FirstName);
     }
+
     await post.save();
     res.status(200).send(post);
   } catch (error) {
@@ -149,6 +188,7 @@ router.post('/post/like/:id', async (req, res) => {
     res.status(500).send({ message: 'An internal server error has occurred' });
   }
 });
+
 
 router.post('/comment/:id' , async (req , res) => {
   const comment = req.body.comment;
