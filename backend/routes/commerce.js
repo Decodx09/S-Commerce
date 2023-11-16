@@ -110,7 +110,34 @@ router.post('/post/:id' , async (req , res) => {
       res.status(500).send({message : "Error Occurred"});
     }
 })
-  
+
+router.delete('/post/:id' , async (req , res) => {
+  const post = await Post.findById(req.params.id);
+  try{
+      if(!post){
+        console.log("Either Post doesn't exist or deleted earlier");
+        return res.status(404).send({ message: "Post not found" });
+      }
+      await post.remove();
+  }catch(error){
+    console.log(error);
+    res.status(500).send({message : "An Internal Server has Occcurred"});
+  }
+})
+
+router.delete('/:id' , async (req , res) => {
+  const product = await Product.findById(req.params.id);
+  try{
+    if(!product){
+      console.log("Either Product has been deleted or doesn't exist");
+      return res.status(404).send({message : "Product has been deleted or didn't exist"});
+    }
+    await product.remove();
+  }catch(error){
+    res.status(500).send({message : "An Internal Server has Occurred"});
+  }
+})
+
 router.get('/:id' , async (req , res) => {
     const userId = req.params.id;
     try{
