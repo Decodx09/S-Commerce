@@ -112,6 +112,20 @@ try {
 }
 });
 
+router.delete('/:id' , async (req , res) => {
+  const user = User.findById(req.params.id);
+  try{
+    if(!user){
+      console.log("user doeesn't exist");
+      res.status(404).send({message : "User Doesn't Exist"});
+    }
+    await user.remove();
+  }catch(error){
+    res.status(500).send({message : "An Internal Error has Occured"});
+    console.log(error);
+  }
+})
+
 router.post('/login', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
