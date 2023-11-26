@@ -17,13 +17,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Redis client setup
-const redisClient = redis.createClient(); // Initialize the Redis client
+const redisClient = redis.createClient();
 
 const cacheMiddleware = (req, res, next) => {
   const key = req.originalUrl || req.url;
 
-  // Check the cache
   redisClient.get(key, (err, data) => {
     if (err) {
       console.error(`Error checking cache: ${err}`);
@@ -31,10 +29,8 @@ const cacheMiddleware = (req, res, next) => {
     }
 
     if (data) {
-      // Data found in cache, send it back
       res.json(JSON.parse(data));
     } else {
-      // Data not found in cache, proceed to the next middleware
       next();
     }
   });

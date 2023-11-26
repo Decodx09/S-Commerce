@@ -1,29 +1,111 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
+    <title>User Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .user-form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: calc(25% - 20px); /* 4 cards in a row */
+            box-sizing: border-box;
+            float: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        textarea {
+            height: 80px; /* Set a specific height for textareas */
+        }
+    </style>
 </head>
 <body>
-    <h1>Chatting Application</h1>
-    
-    <input type="text" id="message" placeholder="Enter Message"/>
-    <button id="sendBtn">Send</button>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <div id="usersContainer"></div>
+
     <script>
-        const socket = io();
-        const sendBtn = document.getElementById("sendBtn");
-        const messageInput = document.getElementById("message");
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch JSON data from the server
+            fetch('http://localhost:5554/user/')
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming data is an array of users
 
-        socket.on("message" , (message) => console.log(message));
+                    // Create a container to hold the user forms
+                    const usersContainer = document.getElementById('usersContainer');
 
-        sendBtn.addEventListener("click" , (e) => {
-            const message = messageInput.value;
-            console.log(message);
-            socket.emit('user-message' , message);
+                    // Iterate over each user and create a form
+                    data.forEach(userData => {
+                        const form = document.createElement('form');
+                        form.classList.add('user-form');
+
+                        // Populate form fields with JSON data
+                        form.innerHTML = `
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" name="firstName" value="${userData.FirstName}" readonly>
+
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" name="lastName" value="${userData.LastName}" readonly>
+
+                            <label for="email">Email:</label>
+                            <input type="text" id="email" name="email" value="${userData.email}" readonly>
+
+                            <label for="bio">Bio:</label>
+                            <textarea id="bio" name="bio" readonly>${userData.bio || ''}</textarea>
+
+                            <label for="isAdmin">Admin:</label>
+                            <input type="text" id="isAdmin" name="isAdmin" value="${userData.Admin ? 'Yes' : 'No'}" readonly>
+
+                            <label for="cart">Cart:</label>
+                            <input type="text" id="cart" name="cart" value="${userData.cart || ''}" readonly>
+
+                            <label for="checkout">Checkout:</label>
+                            <input type="text" id="checkout" name="checkout" value="${userData.checkout || ''}" readonly>
+
+                            <label for="followers">Followers:</label>
+                            <textarea id="followers" name="followers" readonly>${userData.followers ? userData.followers.join(', ') : ''}</textarea>
+
+                            <label for="followings">Followings:</label>
+                            <textarea id="followings" name="followings" readonly>${userData.followings ? userData.followings.join(', ') : ''}</textarea>
+
+                            <label for="items">Cart Items:</label>
+                            <textarea id="items" name="items" readonly>${userData.items ? userData.items.join(', ') : ''}</textarea>
+                        `;
+
+                        // Append the form to the container
+                        usersContainer.appendChild(form);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
         });
     </script>
+
 </body>
 </html>
