@@ -1,13 +1,24 @@
-import React from 'react'
-import {Routes , Route} from 'react-router-dom'
-import home from './pages/home'
+import React from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
+import Home from './pages/home.jsx';
+import Register from './pages/register.jsx'; // Assuming you have a Register component
 
 const App = () => {
   return (
-    <Routes>
-      <Route path='/' element={home}/>
-    </Routes>
-  )
+    <div>
+      <nav>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/register">Register</Link></li>
+        </ul>
+      </nav>
+
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/register' element={<Register />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

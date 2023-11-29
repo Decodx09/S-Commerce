@@ -1,50 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Home = () => {
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+const UserPage = () => {
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5554/product/') // Replace with your API endpoint
-      .then((response) => {
-        setBooks(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5554/user/Admins');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div>
-      <h1>Product List</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map((book, index) => (
-              <tr key={book._id}>
-                <td>{index + 1}</td>
-                <td>{book.name}</td>
-                <td>{book.price}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <h1>User List</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <p>First Name: {user.FirstName}</p>
+            <p>Last Name: {user.LastName}</p>
+            <p>Email: {user.email}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default Home;
+export default UserPage;

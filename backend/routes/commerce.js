@@ -6,7 +6,7 @@ import { OrderItem } from '../models/orderitem.js';
 
 const router = express.Router();
 
-router.post('/addtocart/:id', async (req, res) => {
+router.post('/addtocart/:id' , async (req, res) => {
   const userId = req.params.id;
   const productId = req.body.item;
   const quantity = parseInt(req.query.quantity, 10);
@@ -70,7 +70,7 @@ router.post('/addtocart/:id', async (req, res) => {
 
 // Function to check if a string is a valid MongoDB ObjectId
 
-router.get('/checkout/:id', async (req, res) => {
+router.get('/checkout/:id' , async (req, res) => {
   const userId = req.params.id;
   try {
     const user = await User.findById(userId);

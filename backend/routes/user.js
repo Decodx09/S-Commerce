@@ -6,7 +6,6 @@ const router = express.Router();
 import dotenv from 'dotenv';
 // import errorHandler from '../middlewares/errorHandler';
 
-
 dotenv.config();
 
 const JWT_SECRET = 'shivansh';

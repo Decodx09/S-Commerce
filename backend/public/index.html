@@ -19,7 +19,7 @@
             margin: 10px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: calc(25% - 20px); /* 4 cards in a row */
+            width: calc(25% - 20px);
             box-sizing: border-box;
             float: left;
         }
@@ -30,7 +30,15 @@
             font-weight: bold;
         }
 
-        input,
+        div {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
         textarea {
             width: 100%;
             padding: 8px;
@@ -41,8 +49,8 @@
             resize: vertical;
         }
 
-        textarea {
-            height: 80px; /* Set a specific height for textareas */
+        .user-form textarea {
+            height: 80px;
         }
     </style>
 </head>
@@ -52,54 +60,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Fetch JSON data from the server
             fetch('http://localhost:5554/user/')
                 .then(response => response.json())
                 .then(data => {
-                    // Assuming data is an array of users
-
-                    // Create a container to hold the user forms
                     const usersContainer = document.getElementById('usersContainer');
-
-                    // Iterate over each user and create a form
+                    
                     data.forEach(userData => {
                         const form = document.createElement('form');
                         form.classList.add('user-form');
 
-                        // Populate form fields with JSON data
                         form.innerHTML = `
-                            <label for="firstName">First Name:</label>
-                            <input type="text" id="firstName" name="firstName" value="${userData.FirstName}" readonly>
-
-                            <label for="lastName">Last Name:</label>
-                            <input type="text" id="lastName" name="lastName" value="${userData.LastName}" readonly>
-
-                            <label for="email">Email:</label>
-                            <input type="text" id="email" name="email" value="${userData.email}" readonly>
-
-                            <label for="bio">Bio:</label>
-                            <textarea id="bio" name="bio" readonly>${userData.bio || ''}</textarea>
-
-                            <label for="isAdmin">Admin:</label>
-                            <input type="text" id="isAdmin" name="isAdmin" value="${userData.Admin ? 'Yes' : 'No'}" readonly>
-
-                            <label for="cart">Cart:</label>
-                            <input type="text" id="cart" name="cart" value="${userData.cart || ''}" readonly>
-
-                            <label for="checkout">Checkout:</label>
-                            <input type="text" id="checkout" name="checkout" value="${userData.checkout || ''}" readonly>
-
-                            <label for="followers">Followers:</label>
-                            <textarea id="followers" name="followers" readonly>${userData.followers ? userData.followers.join(', ') : ''}</textarea>
-
-                            <label for="followings">Followings:</label>
-                            <textarea id="followings" name="followings" readonly>${userData.followings ? userData.followings.join(', ') : ''}</textarea>
-
-                            <label for="items">Cart Items:</label>
-                            <textarea id="items" name="items" readonly>${userData.items ? userData.items.join(', ') : ''}</textarea>
+                            <div>${userData.FirstName}</div>
+                            <div>${userData.LastName}</div>
+                            <div>${userData.email}</div>
+                            <div>${userData.bio || ''}</div>
+                            <div>${userData.Admin ? 'Yes' : 'No'}</div>
+                            <div>${userData.cart || ''}</div>
+                            <div>${userData.checkout || ''}</div>
                         `;
 
-                        // Append the form to the container
                         usersContainer.appendChild(form);
                     });
                 })
