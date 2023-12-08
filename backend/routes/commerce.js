@@ -3,6 +3,7 @@ import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 import { Post } from '../models/post.js';
 import { OrderItem } from '../models/orderitem.js';
+import {Rental} from '../models/rental.js';
 
 const router = express.Router();
 
@@ -142,14 +143,15 @@ router.get('/:id' , async (req , res) => {
     const userId = req.params.id;
     try{
         const products = await Product.find({userId});
-        const posts = await Post.find({userId});
+        const posts = await Post.find({userId}).select('post caption');
+        const property = await Rental.find({userId});
         if (!posts) {
           return res.status(404).send({ message: 'No posts uploaded' });
         }
         if(!products){
             res.status(404).send({message : "No Product Uploaded"});
         }
-        res.status(200).send({posts , products});
+        res.status(200).send({posts , products , property});
     }catch(error){
         console.log(error);
         res.status(500).send({message : "Internal Server Error"});
@@ -169,13 +171,13 @@ router.get('/', async (req, res) => {
             { name: { $regex: search, $options: 'i' } },
             { description: { $regex: search, $options: 'i' } },
           ],
-        });
+        },{ name: 1, description: 1, price: 1 , _id:0});
       } else if (hot) {
           products = await Product.find().sort({ createdAt: -1 }).limit(10);
       } else if (category) {
-          products = await Product.find({ tags : category });
+          products = await Product.find({ tags : category },{ name: 1, description: 1, price: 1 , _id: 0});
       } else {
-          products = await Product.find();
+          products = await Product.find({},{ name: 1, description: 1, price: 1 , _id: 0});
       }
 
       res.status(200).json(products);

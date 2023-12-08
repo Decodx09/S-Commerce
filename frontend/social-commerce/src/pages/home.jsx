@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const UserPage = () => {
   const [users, setUsers] = useState([]);
@@ -23,9 +24,7 @@ const UserPage = () => {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            <p>First Name: {user.FirstName}</p>
-            <p>Last Name: {user.LastName}</p>
-            <p>Email: {user.email}</p>
+            <Link to="/">{user.FirstName}</Link>
           </li>
         ))}
       </ul>

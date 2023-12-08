@@ -10,6 +10,7 @@ const App = () => {
         <ul>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/register">Register</Link></li>
+          <h2>shivansh</h2>
         </ul>
       </nav>
 

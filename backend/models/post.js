@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { ObjectId } from "mongoose";
 
 const postSchema = new mongoose.Schema({
-    userId : {type : ObjectId , ref : "User" , required : true},
+    userId : {type : mongoose.Schema.Types.ObjectId , ref : "User" , required : true},
     caption : {type : String , required : false},
     likes : {type : [String] , required : false},
     comments : {type : [String] , required : false},

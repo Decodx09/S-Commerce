@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { ObjectId } from "mongoose";
 
 const productSchema = new mongoose.Schema({
-  userId: { type: ObjectId, ref: "User" , required: true},
   name: { type: String, required: true },
   description: { type: String },
   price: { type: Number, required: true },
@@ -16,13 +15,12 @@ const productSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-productSchema.virtual('id').get(function () {
-  return this._id.toHexString();
-});
+// productSchema.virtual('id').get(function () {
+//   return this._id.toHexString();
+// });
 
-productSchema.set('toJSON', {
-  virtuals: true,
-});
-
+// productSchema.set('toJSON', {
+//   virtuals: true,
+// });
 
 export const Product = mongoose.model("Product" , productSchema);

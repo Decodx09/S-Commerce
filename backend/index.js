@@ -12,6 +12,8 @@ import { PORT, mongoDURL } from './config.js';
 import commerce from './routes/commerce.js';
 import user from './routes/user.js';
 import rental from './routes/rental.js';
+import expressSession from 'express-session';
+import passport from 'passport';
 
 const app = express();
 const server = http.createServer(app);
@@ -121,6 +123,18 @@ app.get('/getproduct/:id', cacheMiddleware, async (req, res) => {
 app.use('/product', commerce);
 app.use('/user', user);
 app.use('/rental', rental);
+
+app.use(expressSession({
+  resave: false,
+  saveUninitialized: false,
+  secret: "hey"
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+// passport.serializeUser(user.serializeUser());
+// passport.deserializeUser(user.deserializeUser());
+
 
 mongoose
   .connect(mongoDURL, {
