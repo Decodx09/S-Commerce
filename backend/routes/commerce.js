@@ -142,9 +142,9 @@ router.delete('/:id' , async (req , res) => {
 router.get('/:id' , async (req , res) => {
     const userId = req.params.id;
     try{
-        const products = await Product.find({userId});
-        const posts = await Post.find({userId}).select('post caption');
-        const property = await Rental.find({userId});
+        const products = await Product.find({userId}).select('name description price -_id');
+        const posts = await Post.find({userId}).select('caption post -_id');
+        const property = await Rental.find({userId}).select('title description location -_id');
         if (!posts) {
           return res.status(404).send({ message: 'No posts uploaded' });
         }
@@ -171,13 +171,13 @@ router.get('/', async (req, res) => {
             { name: { $regex: search, $options: 'i' } },
             { description: { $regex: search, $options: 'i' } },
           ],
-        },{ name: 1, description: 1, price: 1 , _id:0});
+        },{ name: 1, description:1, price:1 , _id:0});
       } else if (hot) {
           products = await Product.find().sort({ createdAt: -1 }).limit(10);
       } else if (category) {
-          products = await Product.find({ tags : category },{ name: 1, description: 1, price: 1 , _id: 0});
+          products = await Product.find({ tags : category },{ name:1, description:1, price:1 , _id:0});
       } else {
-          products = await Product.find({},{ name: 1, description: 1, price: 1 , _id: 0});
+          products = await Product.find({},{ name:1, description:1, price:1 , _id:0});
       }
 
       res.status(200).json(products);

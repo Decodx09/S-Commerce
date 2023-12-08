@@ -13,7 +13,7 @@ const JWT_SECRET = 'shivansh';
 router.get('/Admins', async (req, res) => {
   try {
     const users = await User.find({ Admin: true });
-    const adminNames = users.map(user => ({FN : user.FirstName , LN : user.LastName}));
+    const adminNames = users.map(user => ({FirstName : user.FirstName , LastName : user.LastName}));
     res.status(200).send(adminNames);
   } catch (error) {
     res.status(500).send({ message: "An Internal Error has Occurred" });

@@ -15,12 +15,12 @@ const rentalSchema = new mongoose.Schema({
 },
 {timestamps: true});
 
-rentalSchema.virtual('id').get(function () {
-    return this._id.toHexString();
-  });
+// rentalSchema.virtual('id').get(function () {
+//     return this._id.toHexString();
+//   });
   
-  rentalSchema.set('toJSON', {
-    virtuals: true,
-  });
+//   rentalSchema.set('toJSON', {
+//     virtuals: true,
+//   });
 
 export const Rental = mongoose.model("Rental" , rentalSchema);
