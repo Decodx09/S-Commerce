@@ -8,12 +8,12 @@ pipeline{
        }
        stage("Test"){
            steps{
-               sh 'npm install'
+               sh '''npm install'''
            }
        }
        stage("Build"){
            steps{
-               sh 'npm run build'
+               sh '''npm run build'''
            }
        }
    } 
