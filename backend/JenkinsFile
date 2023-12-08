@@ -21,7 +21,7 @@ pipeline{
        }
        stage('Deploy to container'){
            steps{
-                sh 'docker run -d --name scommerce -p 8081:80 S-Commerce/scommerce:latest'
+                sh 'sudo docker run -d --name scommerce -p 8081:80 S-Commerce/scommerce:latest'
             }
         }
    } 
