@@ -1,28 +1,36 @@
-pipeline{
-   agent any
-    tools{
-            nodejs 'node20'
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'node20'
     }
-   stages{
-       stage("Checkout"){
-           steps{
-               checkout scm
-           }
-       }
-       stage("Test"){
-           steps{
-               sh 'npm install'
-           }
-    }
-       stage("Build"){
-           steps{
-               sh 'npm run build'
-           }
-       }
-       stage('Deploy to container'){
-           steps{
-                sh 'sudo docker run -d --name scommerce -p 8081:80 S-Commerce/scommerce:latest'
+
+    stages {
+        stage("Checkout") {
+            steps {
+                checkout scm
             }
         }
-   } 
+
+        stage("Test") {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage("Build") {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Deploy to container') {
+            steps {
+                script {
+                    // Add any necessary Docker configurations here
+                    sh 'docker run -d --name scommerce -p 8081:80 S-Commerce/scommerce:latest'
+                }
+            }
+        }
+    }
 }
