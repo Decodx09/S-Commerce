@@ -10,6 +10,10 @@ dotenv.config();
 
 const JWT_SECRET = 'shivansh';
 
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+});
+
 router.get('/Admins', async (req, res) => {
   try {
     const users = await User.find({ Admin: true });

@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import createError from 'http-errors'
 import http from 'http';
 import path from 'path';
 import { Server } from 'socket.io';
@@ -20,6 +21,9 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const redisClient = redis.createClient();
+
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
 
 const cacheMiddleware = (req, res, next) => {
   const key = req.originalUrl || req.url;
@@ -55,14 +59,6 @@ const sqlConnection = mysql.createConnection({
   password: 'shivansh',
   database: 'my_database',
 });
-
-app.use(
-  session({
-    secret: 'shivansh',
-    resave: false,
-    saveUninitialized: true,
-  })
-);
 
 dotenv.config();
 
@@ -134,7 +130,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 // passport.serializeUser(user.serializeUser());
 // passport.deserializeUser(user.deserializeUser());
-
 
 mongoose
   .connect(mongoDURL, {

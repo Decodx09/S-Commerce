@@ -28,6 +28,7 @@ pipeline {
             steps {
                 script {
                     // Add any necessary Docker configurations here
+                    sh 'docker -v'
                     sh 'docker run -d --name scommerce -p 8081:80 S-Commerce/scommerce:latest'
                 }
             }

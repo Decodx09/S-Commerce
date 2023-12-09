@@ -68,7 +68,6 @@ router.post('/addtocart/:id' , async (req, res) => {
   }
 });
 
-
 // Function to check if a string is a valid MongoDB ObjectId
 
 router.get('/checkout/:id' , async (req, res) => {
