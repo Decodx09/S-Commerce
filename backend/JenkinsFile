@@ -1,36 +1,49 @@
 pipeline {
-    agent any
 
-    tools {
-        nodejs 'node20'
+  environment {
+    dockerimagename = "thetips4you/nodeapp"
+    dockerImage = ""
+  }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git 'https://github.com/shazforiot/nodeapp_test.git'
+      }
     }
 
-    stages {
-        stage("Checkout") {
-            steps {
-                checkout scm
-            }
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build dockerimagename
         }
-
-        stage("Test") {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage("Build") {
-            steps {
-                sh 'npm run build'
-            }
-        }
-
-        stage('Deploy to container') {
-            steps {
-                script {
-                    sh 'docker -v'
-                    sh 'docker run -d --name scommerce -p 8081:80 S-Commerce/scommerce:latest'
-                }
-            }
-        }
+      }
     }
+
+    stage('Pushing Image') {
+      environment {
+               registryCredential = 'dockerhublogin'
+           }
+      steps{
+        script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
+        }
+      }
+    }
+
+    stage('Deploying App to Kubernetes') {
+      steps {
+        script {
+          kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+        }
+      }
+    }
+
+  }
+
 }
