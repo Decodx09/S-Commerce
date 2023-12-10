@@ -11,7 +11,7 @@ pipeline {
 
     stage('Checkout Source') {
       steps {
-        git 'https://github.com/shazforiot/nodeapp_test.git'
+        git 'https://github.com/Decodx09/S-Commerce'
       }
     }
 
@@ -25,7 +25,7 @@ pipeline {
 
     stage('Pushing Image') {
       environment {
-               registryCredential = 'dockerhublogin'
+               registryCredential = 'mbcznvx12345'
            }
       steps{
         script {
