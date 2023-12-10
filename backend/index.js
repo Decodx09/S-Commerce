@@ -39,16 +39,32 @@ const sqlConnection = mysql.createConnection({
 dotenv.config();
 
 app.get('/register', (req, res) => {
-  res.render('home.ejs');
+  try{
+    res.render('home.ejs');
+  }catch{
+    res.render('error.ejs' , {error : 'Server is down babe'})
+  }
 });
 
 app.get('/login', (req, res) => {
-  res.render('login.ejs');
+  try{
+    res.render('login.ejs')
+  }catch{
+    res.render('error.ejs' , {error : 'Server is down babe'})
+  }
 });
 
-app.get('/profile' , (req , res) => {
-  res.render('profile.ejs');
-})
+app.get('/profile/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  
+  try {
+    const response = await axios.get(`http://localhost:5554/product/${userId}`);
+    res.render('profile.ejs', { user: response.data }); 
+  } catch (error) {
+    res.render('error.ejs', { error: 'User profile not found' });
+  }
+});
+
 
 app.use('/product', commerce);
 app.use('/user', user);

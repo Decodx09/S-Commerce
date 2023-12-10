@@ -5,6 +5,15 @@
     justify-content: center;
 }
 
+.box{
+    margin-top : 10px;
+}
+
 .sbutton{
-    color : rgb(255, 125, 19);
+    background-color : rgb(255, 125, 19);
+    margin : 20px 20px 20px 20px;
+}
+
+.login{
+    margin-top : 10px;
 }

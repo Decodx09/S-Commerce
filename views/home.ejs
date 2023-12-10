@@ -6,16 +6,16 @@
   <link rel="stylesheet" href="../css/home.css">
   <title>Register</title>
 </head>
-<body>
+<body class="one">
   <form action="http://localhost:5554/user/register" method="post">
     <div class="main">
-      <input type="text" placeholder="First Name" name="FirstName">
-      <input type="text" placeholder="Last Name" name="LastName">
-      <input type="text" placeholder="Email" name="email">
-      <input type="text" placeholder="Password" name="password">
-      <input class="sbutton" type="submit" value="Make New Account">
-      <button href="/views/login.ejs">Already Have an Account </button>
-    </div>
+      <div class="box"><input type="text" placeholder="First Name" name="FirstName"></div>
+      <div class="box"><input type="text" placeholder="Last Name" name="LastName"></div>
+      <div class="box"><input type="text" placeholder="Email" name="email"></div>
+      <div class="box"><input type="text" placeholder="Password" name="password"></div>
+      <div><input class="sbutton" type="submit" value="Make New Account"></div>
+      <a href="/views/login.ejs" class="login">Already Have an Account</a>
+    </div>    
   </form>
 </body>
 </html>

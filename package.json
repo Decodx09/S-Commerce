@@ -13,6 +13,7 @@
   "author": "shivansh sukhija",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.2",
     "bcrpyt": "^2.0.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
