@@ -1,0 +1,21 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/home.css">
+  <title>Register</title>
+</head>
+<body>
+  <form action="http://localhost:5554/user/register" method="post">
+    <div class="main">
+      <input type="text" placeholder="First Name" name="FirstName">
+      <input type="text" placeholder="Last Name" name="LastName">
+      <input type="text" placeholder="Email" name="email">
+      <input type="text" placeholder="Password" name="password">
+      <input class="sbutton" type="submit" value="Make New Account">
+      <button href="/views/login.ejs">Already Have an Account </button>
+    </div>
+  </form>
+</body>
+</html>

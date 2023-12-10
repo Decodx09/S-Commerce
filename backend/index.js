@@ -15,41 +15,17 @@ import user from './routes/user.js';
 import rental from './routes/rental.js';
 import expressSession from 'express-session';
 import passport from 'passport';
+import ejs from 'ejs';
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const redisClient = redis.createClient();
-
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'ejs');
-
-const cacheMiddleware = (req, res, next) => {
-  const key = req.originalUrl || req.url;
-
-  redisClient.get(key, (err, data) => {
-    if (err) {
-      console.error(`Error checking cache: ${err}`);
-      next();
-    }
-
-    if (data) {
-      res.json(JSON.parse(data));
-    } else {
-      next();
-    }
-  });
-};
-
-io.on('connection', (socket) => {
-  socket.on('user-message', (message) => {
-    console.log('A new User message has arrived', message);
-    io.emit('message', message);
-  });
-});
+app.set('view engine', 'ejs');
+app.set('views' , path.resolve("../views"))
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 app.use(express.static(path.resolve('./public')));
 app.use(cors());
 
@@ -62,59 +38,17 @@ const sqlConnection = mysql.createConnection({
 
 dotenv.config();
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('./public/index.html'));
+app.get('/register', (req, res) => {
+  res.render('home.ejs');
 });
 
-app.post('/shivansh', async (req, res) => {
-  try {
-    const product = req.body;
-    await sqlConnection.query(
-      'INSERT INTO products (name, description, price) VALUES (?, ?, ?)',
-      [product.name, product.description, product.price]
-    );
-    res.status(201).json({ message: 'Product Added Successfully', product });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'An Error Occurred' });
-  }
+app.get('/login', (req, res) => {
+  res.render('login.ejs');
 });
 
-app.get('/getproduct/:id', cacheMiddleware, async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const cachedData = await new Promise((resolve, reject) => {
-      redisClient.get(`product:${id}`, (err, data) => {
-        if (err) reject(err);
-        else resolve(data);
-      });
-    });
-
-    if (cachedData) {
-      res.json(JSON.parse(cachedData));
-      return;
-    }
-
-    const product = await new Promise((resolve, reject) => {
-      sqlConnection.query('SELECT * FROM products WHERE id = ?', [id], (error, results) => {
-        if (error) reject(error);
-        else resolve(results[0]);
-      });
-    });
-
-    if (!product) {
-      res.status(404).json({ message: 'Product Not Found' });
-      return;
-    }
-
-    redisClient.setex(`product:${id}`, 3600, JSON.stringify(product));
-    res.json(product);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'An Error Occurred' });
-  }
-});
+app.get('/profile' , (req , res) => {
+  res.render('profile.ejs');
+})
 
 app.use('/product', commerce);
 app.use('/user', user);

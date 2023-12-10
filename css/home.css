@@ -1,0 +1,10 @@
+.main{
+    display : flex;
+    flex-direction : column;
+    text-align: center;
+    justify-content: center;
+}
+
+.sbutton{
+    color : rgb(255, 125, 19);
+}

@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     Admin: { type: Boolean, default: false, required: false },
     post : [{type: mongoose.Schema.Types.ObjectId , ref : 'post'}],
-    bio: { type: String, required: true },
+    bio: { type: String, required: false },
     cart: {type: Number , required: false},
     items : [{type: mongoose.Schema.Types.ObjectId, ref:'Product'}],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
