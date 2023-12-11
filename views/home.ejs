@@ -7,13 +7,47 @@
   <title>Register</title>
 </head>
 <body class="one">
+  <style>
+    .main{
+        display : flex;
+        flex-direction : column;
+        text-align: center;
+        justify-content: center;
+        margin-top : 200px;
+    }
+
+    .box{
+        margin-top : 10px;
+        margin-left : 0px;
+        margin-bottom : 5px;
+    }
+
+    .sbutton{
+        background-color : rgb(80, 141, 216);
+        color : white;
+        padding: 10px 10px 10px 10px;
+        border-style: none;
+        margin-top : 10px;
+        width : 300px;
+    }
+
+    .ek{
+      height : 40px;
+      width : 300px;
+      padding : 10px 10px 10px 10px;
+    }
+
+    .login{
+        margin-top : 10px;
+    }
+  </style>
   <form action="http://localhost:5554/user/register" method="post">
     <div class="main">
-      <div class="box"><input type="text" placeholder="First Name" name="FirstName"></div>
-      <div class="box"><input type="text" placeholder="Last Name" name="LastName"></div>
-      <div class="box"><input type="text" placeholder="Email" name="email"></div>
-      <div class="box"><input type="text" placeholder="Password" name="password"></div>
-      <div><input class="sbutton" type="submit" value="Make New Account"></div>
+      <div class="box"><input class="ek" type="text" placeholder="First Name" name="FirstName"></div>
+      <div class="box"><input class="ek" type="text" placeholder="Last Name" name="LastName"></div>
+      <div class="box"><input class="ek" type="text" placeholder="Email" name="email"></div>
+      <div class="box"><input class="ek" type="text" placeholder="Password" name="password"></div>
+      <div class="box"><input class="sbutton" type="submit" value="Make New Account"></div>
       <a href="/views/login.ejs" class="login">Already Have an Account</a>
     </div>    
   </form>

@@ -4,6 +4,8 @@ import { User } from '../models/user.js';
 import { Post } from '../models/post.js';
 import { OrderItem } from '../models/orderitem.js';
 import { Rental } from '../models/rental.js';
+import redis from 'redis';
+import util from 'util';
 
 const router = express.Router();
 
@@ -42,14 +44,27 @@ router.post('/:id' , async (req , res) => {
     }
 });
 
-router.get('/' , async (req , res) => {
-    const rooms = await Rental.find();
-    try{
+const client = redis.createClient({
+    host: 'localhost',
+    port: 6379,
+  });
+
+const getAsync = util.promisify(client.get).bind(client);
+
+router.get('/', async (req, res) => {
+    try {
+      const cachedData = await getAsync('rental_data');
+      if (cachedData) {
+        res.status(200).send(JSON.parse(cachedData));
+      } else {
+        const rooms = await Rental.find();
+        client.setex('rental_data', 60, JSON.stringify(rooms));
         res.status(200).send(rooms);
-    }catch(error){
-        res.status(500).send({message : "Internal Server Error"});
-        console.log(error);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
     }
-});
+  });
 
 export default router;

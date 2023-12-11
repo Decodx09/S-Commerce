@@ -5,11 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
-<body>
+<body class="one">
+    <style>
+    .main{
+        display : flex;
+        flex-direction : column;
+        text-align: center;
+        justify-content: center;
+        margin-top : 200px;
+    }
+
+    .box{
+        margin-top : 10px;
+        margin-left : 0px;
+        margin-bottom : 5px;
+    }
+
+    .sbutton{
+        background-color : rgb(80, 141, 216);
+        color : white;
+        padding: 10px 10px 10px 10px;
+        border-style: none;
+        margin-top : 10px;
+        width : 300px;
+    }
+
+    .ek{
+      height : 40px;
+      width : 300px;
+      padding : 10px 10px 10px 10px;
+    }
+
+    .login{
+        margin-top : 10px;
+    }
+    </style>
     <form action="http://localhost:5554/user/login" method="post">
-        <input type="text" placeholder="Email" name="email">
-        <input type="text" placeholder="Password" name="password">
-        <input type="submit" value="Login">
+        <div class="main">
+            <div class="box"><input class="ek" type="text" placeholder="Email" name="email"></div>
+            <div class="box"><input class="ek" type="text" placeholder="Password" name="password"></div>
+            <div class="box"><input class="sbutton" type="submit" value="Login"></div>
+        </div>
     </form>
 </body>
 </html>
