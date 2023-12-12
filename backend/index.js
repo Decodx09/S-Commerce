@@ -16,6 +16,7 @@ import rental from './routes/rental.js';
 import expressSession from 'express-session';
 import passport from 'passport';
 import ejs from 'ejs';
+import axios from 'axios';
 
 const app = express();
 const server = http.createServer(app);
@@ -56,15 +57,23 @@ app.get('/login', (req, res) => {
 
 app.get('/profile/:userId', async (req, res) => {
   const userId = req.params.userId;
-  
   try {
     const response = await axios.get(`http://localhost:5554/product/${userId}`);
-    res.render('profile.ejs', { user: response.data }); 
+    if (response.data.products && response.data.products.length > 0) {
+      const profile = response.data.products[0];
+      res.render('profile.ejs', { user: response.data, profile: profile });
+    } else {
+      res.render('error.ejs', { error: 'No profile data found' });
+    }
   } catch (error) {
-    res.render('error.ejs', { error: 'User profile not found' });
+    console.error('Axios Error:', error.message);
+    if (error.code === 'ECONNRESET') {
+      res.render('error.ejs', { error: 'Connection to the server was reset' });
+    } else {
+      res.render('error.ejs', { error: 'An error occurred while fetching data' });
+    }
   }
 });
-
 
 app.use('/product', commerce);
 app.use('/user', user);

@@ -5,11 +5,191 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
 </head>
-<body>
-    <h1>shivansh</h1>
-    <h1>Profile</h1>
-    <p><strong>Name:</strong> <%= profile.name %></p>
-    <p><strong>Description:</strong> <%= profile.description %></p>
-    <p><strong>Price:</strong> $<%= profile.price %></p>
+<body class="main">
+    <style>
+        .main{
+            display : flex;
+            flex-direction : column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heading{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .product{
+            height : 150px;
+            width : 400px;
+            background-color: rgb(255, 237, 231);
+            margin-top : 20px;
+            display : flex;
+            flex-direction : row;
+        }
+
+        .product-1{
+            height : 150px;
+            width : 150px;
+            background-color: lightgrey;
+        }
+
+        .product-2{
+            height : 150px;
+            width : 200px;
+            background-color: rgb(214, 237, 251);
+        }
+
+        .p-21{
+            height : 120px;
+            width : 250px;
+            background-color: rgb(247, 211, 211);
+        }
+
+        .p-22{
+            height : 30px;
+            width : 250px;
+            background-color: rgb(237, 204, 237);
+            font-family: Arial, Helvetica, sans-serif;
+            display : flex;
+            align-items: center;
+        }
+
+        .product-name{
+            font-family: Arial, Helvetica, sans-serif;
+            display : flex;
+            flex-direction : row;
+            margin-left : 10px;
+            font-weight : bold;
+        }
+
+        .product-desc{
+            font-family: Arial, Helvetica, sans-serif;
+            margin-left : 10px;
+            color : gray;
+            font-size : small;
+        }
+
+        .fuck{
+            margin-left : 10px;
+        }
+
+    </style>
+    <h1 class="heading">Profile</h1>
+
+    <% if (user.products && user.products.length > 0) { %>
+        <% user.products.forEach((product, index) => { %>
+            <div class="product">
+                <div class="product-1">
+                    <img src="/Users/shivansh/Desktop/S-Commerce/kitty.jpeg" alt="">
+                </div>
+                <div class="product-2">
+                    <div class="p-21">
+                        <div class="product-name">
+                            <p><%= product.name %></p>
+                        </div>
+                        <div class="product-desc">
+                            <p>• <%= product.description %></p>
+                        </div>
+                    </div>
+                    <div class="p-22">
+                        <p class="fuck">$<%= product.price %></p>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No profile data found</p>
+    <% } %>
+
+    -------------------------------------------------------------------------------------------------
+
+    <style>
+        .super{
+            display : flex;
+            flex-direction : row;
+            width : 400px;
+        }
+        .one{
+            height : 200px;
+            width : 100px;
+            background-color: lightskyblue;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+        }
+
+        .two{
+            height : 200px;
+            width : 300px;
+            background-color: lightseagreen;
+        }
+
+        .three{
+            height : 40px;
+            width : 300px;
+            background-color: lightgrey;
+            font-family: Arial, Helvetica, sans-serif;
+            display : flex;
+        }
+
+        .four{
+            height : 120px;
+            width : 300px;
+            background-color: lightgreen;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .five{
+            height : 40px;
+            width : 300px;
+            background-color: lightpink;
+        }
+
+        .circle{
+            height : 60px;
+            width : 60px;
+            border-radius: 50%;
+            background-color: lightgoldenrodyellow;
+            margin-top : 10px;
+        }
+
+        .six{
+            margin-left : 10px;
+            display : flex;
+            flex-direction : row;
+            align-items: center;
+        }
+
+        .seven{
+            margin-top : 0px;
+            margin-left : 10px;
+        }
+    </style>
+
+    <% user.posts.forEach((post, index) => { %>
+
+        <div class="super">
+            <div class="one">
+                <div class="circle"></div>
+            </div>
+            <div class="two">
+                <div class="three">
+                    <p class="six"><%=post.post%></p>
+                </div>
+                <div class="four">
+                    <div>
+                        <p class="seven"><%=post.caption%></p>
+                    </div>
+                </div>
+                <div class="five">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+    <% }) %>
+
 </body>
 </html>
