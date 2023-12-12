@@ -101,13 +101,13 @@
         <p>No profile data found</p>
     <% } %>
 
-    -------------------------------------------------------------------------------------------------
 
     <style>
         .super{
             display : flex;
             flex-direction : row;
             width : 400px;
+            margin-top : 20px;
         }
         .one{
             height : 200px;
@@ -174,10 +174,10 @@
             </div>
             <div class="two">
                 <div class="three">
-                    <p class="six"><%=post.post%></p>
                 </div>
                 <div class="four">
                     <div>
+                        <p class="six"><%=post.post%></p>
                         <p class="seven"><%=post.caption%></p>
                     </div>
                 </div>
@@ -190,6 +190,5 @@
         </div>
 
     <% }) %>
-
 </body>
 </html>

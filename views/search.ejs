@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+<body>
+    <form id="searchForm" action="http://localhost:5554/product" method="get">
+        <div class="main">
+            <div class="box">
+                <input type="text" placeholder="Search" name="search" id="searchInput">
+                <button type="button" onclick="submitForm()">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function submitForm() {
+            var searchQuery = document.getElementById("searchInput").value;
+            var form = document.getElementById("searchForm");
+            form.action = "http://localhost:5554/product?search=" + encodeURIComponent(searchQuery);
+            form.submit();
+        }
+    </script>
+</body>
+</html>

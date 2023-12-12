@@ -55,6 +55,14 @@ app.get('/login', (req, res) => {
   }
 });
 
+app.get('/search' , (req , res) => {
+  try{
+    res.render('search.ejs');
+  }catch{
+    res.render('error.ejs' , {error : 'Server is down babe'})
+  }
+})
+
 app.get('/profile/:userId', async (req, res) => {
   const userId = req.params.userId;
   try {
