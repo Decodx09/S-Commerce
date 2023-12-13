@@ -7,11 +7,34 @@
     <title>Search</title>
 </head>
 <body>
+    <style>
+        .main{
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+        }
+
+        .input{
+            height : 40px;
+            width : 400px;
+            padding-left: 20px;
+            border-style : none;
+            background-color: rgb(232, 232, 232);
+            color: black;
+        }
+
+        .btn{
+            height : 40px;
+            width : 100px;
+            border-style: none;
+        }
+    </style>
+
     <form id="searchForm" action="http://localhost:5554/product" method="get">
         <div class="main">
             <div class="box">
-                <input type="text" placeholder="Search" name="search" id="searchInput">
-                <button type="button" onclick="submitForm()">Search</button>
+                <input class="input" type="text" placeholder="Search" name="search" id="searchInput">
+                <button class="btn" type="button" onclick="submitForm()">Search</button>
             </div>
         </div>
     </form>
