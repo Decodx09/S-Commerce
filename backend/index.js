@@ -68,7 +68,7 @@ app.get('/profile/:userId', async (req, res) => {
   try {
     const response = await axios.get(`http://localhost:5554/product/${userId}`);
     if (response.data.products && response.data.products.length > 0) {
-      const profile = response.data.products[0];
+      const profile = response.data. products[0];
       res.render('profile.ejs', { user: response.data, profile: profile });
     } else {
       res.render('error.ejs', { error: 'No profile data found' });
