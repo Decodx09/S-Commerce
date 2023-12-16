@@ -39,6 +39,14 @@ const sqlConnection = mysql.createConnection({
 
 dotenv.config();
 
+app.get('/newsfeed' , (req , res) => {
+  try{
+    res.render('socialmedia');
+  }catch{
+    res.render('error.ejs' , {error : 'Server is down babe'});
+  }
+})
+
 app.get('/register', (req, res) => {
   try{
     res.render('home.ejs');
