@@ -8,10 +8,13 @@
 <body class="main">
     <style>
         .main{
-            display : flex;
+            display : grid;
             flex-direction : column;
-            justify-content: center;
-            align-items: center;
+            grid-template-columns: 1fr 1fr 1fr;
+            /* justify-content: center;
+            align-items: center; */
+            margin-left : 290px;
+            margin-top : 100px;
         }
 
         .heading{
@@ -19,39 +22,41 @@
         }
 
         .product{
-            height : 150px;
+            height : 200px;
             width : 400px;
-            background-color: rgb(255, 237, 231);
+            background-color: rgb(255, 255, 255);
             margin-top : 20px;
             display : flex;
             flex-direction : row;
         }
 
         .product-1{
-            height : 150px;
-            width : 150px;
-            background-color: lightgrey;
+            height : 200px;
+            width : 200px;
+            border-radius : 10px;
+            background-color: rgb(195, 195, 195);
         }
 
         .product-2{
-            height : 150px;
+            height : 200px;
             width : 200px;
-            background-color: rgb(214, 237, 251);
+            background-color: rgb(133, 193, 230);
         }
 
         .p-21{
-            height : 120px;
+            height : 150px;
             width : 250px;
-            background-color: rgb(247, 211, 211);
+            background-color: rgb(255, 255, 255);
         }
 
         .p-22{
-            height : 30px;
+            height : 50px;
             width : 250px;
-            background-color: rgb(237, 204, 237);
+            background-color: rgb(255, 255, 255);
             font-family: Arial, Helvetica, sans-serif;
             display : flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .product-name{
@@ -71,28 +76,95 @@
 
         .fuck{
             margin-left : 10px;
+            border-style: solid;
+            border-color: gray;
+            border-width : 1px;
+            background-color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            padding-left : 14px;
+            padding-right : 14px;
+            padding-top : 4px;
+            padding-bottom : 4px;
+            border-radius : 11px;
+        }
+
+        .fuck2{
+            margin-right : 20px;
+            padding : 8 8 8 8;
+            border-style : none;
+            color : white;
+            background-color: black;
+        }
+
+        .wishlist{
+            height : 35px;
+            width : 35px;
+            border-radius : 50%;
+            border-style: none;
+            position : relative;
+            top : 5px;
+            left : 155px;
+        }
+
+        .left{
+            position : fixed;
+            left : 0px;
+            bottom : 0px;
+            top : 80px;
+            width : 270px;
+            background-color: rgb(238, 214, 214);
+        }
+
+        .top{
+            position : fixed;
+            left : 0px;
+            right : 0px;
+            top : 0px;
+            height : 100px;
+            z-index: 100;
+            background-color: lightcoral;
+        }
+
+        .one{
+            background-color: aqua;
+            height : 100;
+            width : 300px;
+        }
+
+        .logo{
+            height : 200px;
+            width : 200px;
         }
 
     </style>
-    <h1 class="heading">Profile</h1>
+    <!-- <h1 class="heading">Profile</h1> -->
+
+    <div class="top">
+        <div class="one">
+        </div>
+        <div class="two"></div>
+    </div>
+    <div class="left"></div>
 
     <% if (user.products && user.products.length > 0) { %>
         <% user.products.forEach((product, index) => { %>
             <div class="product">
                 <div class="product-1">
                     <img src="/Users/shivansh/Desktop/S-Commerce/kitty.jpeg" alt="">
+                    <button class="wishlist"><img src="../heart.jpeg" alt=""></button>
                 </div>
                 <div class="product-2">
                     <div class="p-21">
                         <div class="product-name">
-                            <p><%= product.name %></p>
+                            <p style="margin-top : 5px;"><%= product.name %></p>
                         </div>
                         <div class="product-desc">
                             <p>• <%= product.description %></p>
                         </div>
                     </div>
                     <div class="p-22">
-                        <p class="fuck">$<%= product.price %></p>
+                        <button class="fuck">$<%= product.price %></button>
+                        <button class="fuck2">Add to cart</button>
                     </div>
                 </div>
             </div>
@@ -101,6 +173,39 @@
         <p>No profile data found</p>
     <% } %>
 
+    <style>
+        .shift{
+            position : fixed;
+            left : 40%;
+            right : 50%;
+            bottom : 15%;
+            height : 70px;
+            width : 300px;
+            background-color: rgb(217, 236, 236);
+            opacity: 80%;
+            border-radius : 20px;
+            display : flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .shift1{
+            height : 50px;
+            width : 110px;
+            border-radius : 10px;
+            margin-left : 10px;
+            margin-top : 10px;
+            margin-bottom : 10px;
+            margin-right : 10px;
+            border-style : none;
+        }
+    </style>
+
+    <div class="shift">
+        <button class="shift1">Market</button>
+        <button class="shift1">Trends</button>
+        <button class="shift1">Rent</button>
+    </div>
 
     <style>
             .twitter-personalprofile{
@@ -173,7 +278,7 @@
             }
     </style>
 
-    <% user.posts.forEach((post, index) => { %>
+    <!-- <% user.posts.forEach((post, index) => { %>
 
         <div class="twitter">
             <div class="twitter-profile">
@@ -186,6 +291,14 @@
             </div>
         </div>
 
-    <% }) %>
+    <% }) %> -->
+
+    <style>
+
+    </style>
+
+    <div>
+
+    </div>
 </body>
 </html>
