@@ -39,9 +39,17 @@ const sqlConnection = mysql.createConnection({
 
 dotenv.config();
 
+app.get('/user-profile' , (req , res) => {
+  try{  
+    res.render('user-profile.ejs');
+  }catch{
+    res.render('error.ejs' , {error : 'Server is down babe'});
+  }
+})
+
 app.get('/newsfeed' , (req , res) => {
   try{
-    res.render('socialmedia');
+    res.render('socialmedia.ejs');
   }catch{
     res.render('error.ejs' , {error : 'Server is down babe'});
   }
@@ -84,7 +92,27 @@ app.get('/profile/:userId', async (req, res) => {
   } catch (error) {
     console.error('Axios Error:', error.message);
     if (error.code === 'ECONNRESET') {
-      res.render('error.ejs', { error: 'Connection to the server was reset' });
+      res.render('error.ejs', { error: 'Connection to the Server was reset' });
+    } else {
+      res.render('error.ejs', { error: 'An error occurred while fetching data' });
+    }
+  }
+});
+
+app.get('/market', async (req, res) => {
+  try {
+    const response = await axios.get('http://localhost:5554/product/');
+    console.log('Response Data:', response.data);
+    if (response.data && response.data.length > 0) {
+      const products = response.data[0];
+      res.render('market.ejs', { user : products });
+    } else {
+      res.render('error.ejs', { error: 'No profile data found' });
+    }
+  } catch (error) {
+    console.error('Axios Error:', error.message);
+    if (error.code === 'ECONNRESET') {
+      res.render('error.ejs', { error: 'Connection to the Server was reset' });
     } else {
       res.render('error.ejs', { error: 'An error occurred while fetching data' });
     }

@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../css/user-profile.css">
+</head>
+<body>
+    <style>
+        .left{
+            position : fixed;
+            left : 0;
+            bottom : 0;   
+            top : 0;  
+            width : 250px;
+            background-color: lightgreen;
+        }
+
+        .top{
+            position : fixed;
+            left : 250px;
+            top : 0px;
+            right : 0px;
+            height : 250px;
+            background-color: rgb(224, 224, 224);
+        }
+
+        .top-1{
+            position : fixed;
+            left : 250px;
+            top : 250px;
+            right : 0px;
+            height : 60px;
+            background-color: rgb(170, 170, 170);
+        }
+
+        .profile-picture{
+            position : relative;
+            left : 240px;
+            top : 40px;
+            height : 170px;
+            width : 170px;
+            border-radius : 50%;
+            background-color: lightgoldenrodyellow;
+        }
+
+        .user-data{
+            height : 250px;
+            width : 550px;
+            background-color: rgb(224, 224, 224);
+            position : fixed;
+            left : 800px;
+            top : 0px;
+            display : flex;
+            flex-direction : column;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bolder;
+            font-size : large;
+        }
+
+        .user-data-1{
+            display : flex;
+            flex-direction : row;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .user-data-2{
+            height : 50px;
+            width : 1fr;
+            background-color: rgb(224, 224, 224);
+            display : flex;
+            justify-content: center;
+            align-items: center;
+            margin-right : 350px;
+        }
+    </style>
+    <div class="left"></div>
+
+    <div class="top">
+        <div class="profile-picture"></div>
+        <div class="user-data">
+            <div class="user-data-1">
+                <div>Posts</div>
+                <div>Followers</div>
+                <div>Followings</div>
+            </div>
+            <div class="user-data-2">
+                <div>User Name</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-1"></div>
+
+    <div class="down"></div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market</title>
+</head>
+<body>
+    <style>
+        .left{
+            position : fixed;
+            left : 0px;
+            bottom : 0px;
+            top : 80px;
+            width : 270px;
+            background-color: rgb(238, 214, 214);
+        }
+
+        .top{
+            position : fixed;
+            left : 0px;
+            right : 0px;
+            top : 0px;
+            height : 100px;
+            z-index: 100;
+            background-color: lightcoral;
+        }
+
+        .one{
+            background-color: aqua;
+            height : 100;
+            width : 300px;
+        }
+    </style>
+
+    <div class="top">
+        <div class="one">
+        </div>
+        <div class="two"></div>
+    </div>
+    <div class="left"></div>
+
+    <div class="feature" id="searchResults"></div>
+
+    shivansh sukhija
+
+    <% if (user.products && user.products.length > 0) { %>
+        <% user.products.forEach((product, index) => { %>
+            <div class="product">
+                <div class="product-1">
+                    <img src="/Users/shivansh/Desktop/S-Commerce/kitty.jpeg" alt="">
+                    <button class="wishlist"><img src="./heart.jpeg" alt=""></button>
+                </div>
+                <div class="product-2">
+                    <div class="p-21">
+                        <div class="product-name">
+                            <p style="margin-top : 5px;"><%= product.name %></p>
+                        </div>
+                        <div class="product-desc">
+                            <p>• <%= product.description %></p>
+                        </div>
+                    </div>
+                    <div class="p-22">
+                        <button class="fuck">$<%= product.price %></button>
+                        <button class="fuck2">Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No profile data found</p>
+    <% } %>
+
+</body>
+</html>

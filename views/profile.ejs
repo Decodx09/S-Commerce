@@ -26,6 +26,7 @@
             width : 400px;
             background-color: rgb(255, 255, 255);
             margin-top : 20px;
+            margin-right : 10px;
             display : flex;
             flex-direction : row;
         }
@@ -35,6 +36,12 @@
             width : 200px;
             border-radius : 10px;
             background-color: rgb(195, 195, 195);
+        }
+
+
+        .product-1:hover{
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            border-radius : 10px;
         }
 
         .product-2{
@@ -93,7 +100,7 @@
             padding : 8 8 8 8;
             border-style : none;
             color : white;
-            background-color: black;
+            background-color: rgb(77, 152, 226);
             font-family: Arial, Helvetica, sans-serif;
             font-weight : bold;
         }
@@ -113,29 +120,68 @@
             left : 0px;
             bottom : 0px;
             top : 80px;
-            width : 270px;
+            width : 265px;
             background-color: rgb(238, 214, 214);
         }
 
         .top{
+            display : flex;
+            flex-direction : row;
             position : fixed;
             left : 0px;
             right : 0px;
             top : 0px;
             height : 100px;
             z-index: 100;
-            background-color: lightcoral;
+            background-color: rgb(143, 220, 241);
         }
 
         .one{
-            background-color: aqua;
-            height : 100;
-            width : 300px;
+            background-color: rgb(143, 220, 241);
+            height : 100px;
+            width : 200px;
+        }
+
+        .two{
+            background-color: rgb(143, 220, 241);
+            height : 100px;
+            width : fr;
         }
 
         .logo{
             height : 200px;
             width : 200px;
+        }
+
+        .search-1{
+            display : flex;
+            flex-direction: row;
+            margin-left : 400px;
+            margin-top : 25px;
+        }
+
+        .input {
+            height: 40px;
+            width: 400px;
+            padding-left: 20px;
+            border-style: none;
+            background-color: rgb(232, 232, 232);
+            color: black;
+        }
+
+        .btn {
+            height: 40px;
+            width: 100px;
+            border-style: none;
+        }
+
+        #searchResults {
+            margin-top: 20px;
+        }
+
+        .feature{
+            margin : 0px 0px 0px 0px;
+            width : 0px;
         }
 
     </style>
@@ -144,16 +190,24 @@
     <div class="top">
         <div class="one">
         </div>
-        <div class="two"></div>
+        <div class="two">
+            <div class="search-1">
+                <input class="input" type="text" placeholder="Search" name="search" id="searchInput">
+                <button class="btn" type="button" onclick="submitForm()">Search</button>
+            </div>
+        </div>
     </div>
-    <div class="left"></div>
+    <div class="left">
+    </div>
+
+    <div class="feature" id="searchResults"></div>
 
     <% if (user.products && user.products.length > 0) { %>
         <% user.products.forEach((product, index) => { %>
             <div class="product">
                 <div class="product-1">
                     <img src="/Users/shivansh/Desktop/S-Commerce/kitty.jpeg" alt="">
-                    <button class="wishlist"><img src="../heart.jpeg" alt=""></button>
+                    <button class="wishlist"><img src="./heart.jpeg" alt=""></button>
                 </div>
                 <div class="product-2">
                     <div class="p-21">
@@ -295,12 +349,43 @@
 
     <% }) %> -->
 
-    <style>
-
-    </style>
-
-    <div>
-
-    </div>
+    <script>
+        function submitForm() {
+            var searchQuery = document.getElementById("searchInput").value;
+            fetch("http://localhost:5554/product?search=" + encodeURIComponent(searchQuery))
+                .then(response => response.json())
+                .then(data => {
+                    var htmlContent = "<ul>";
+                    data.forEach(product => {
+                        htmlContent += 
+                        `
+                        <div class="product">
+                            <div class="product-1">
+                                <img src="/Users/shivansh/Desktop/S-Commerce/kitty.jpeg" alt="">
+                                <button class="wishlist"><img src="./heart.jpeg" alt=""></button>
+                            </div>
+                            <div class="product-2">
+                                <div class="p-21">
+                                    <div class="product-name">
+                                        <p style="margin-top : 5px;">${product.name}</p>
+                                    </div>
+                                    <div class="product-desc">
+                                        <p>• ${product.description}</p>
+                                    </div>
+                                </div>
+                                <div class="p-22">
+                                    <button class="fuck">$${product.price}</button>
+                                    <button class="fuck2">Add to cart</button>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    });
+                    htmlContent += "</ul>";
+                    document.getElementById("searchResults").innerHTML = htmlContent;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>

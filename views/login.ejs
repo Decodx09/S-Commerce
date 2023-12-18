@@ -39,12 +39,19 @@
     .login{
         margin-top : 10px;
     }
+
+    .class{
+        display : flex;
+        flex-direction : column;
+    }
     </style>
     <form action="http://localhost:5554/user/login" method="post">
-        <div class="main">
-            <div class="box"><input class="ek" type="text" placeholder="Email" name="email"></div>
-            <div class="box"><input class="ek" type="text" placeholder="Password" name="password"></div>
-            <div class="box"><input class="sbutton" type="submit" value="Login"></div>
+        <div class="class">
+            <div class="main">
+                <div class="box"><input class="ek" type="text" placeholder="Email" name="email"></div>
+                <div class="box"><input class="ek" type="text" placeholder="Password" name="password"></div>
+                <div class="box"><input class="sbutton" type="submit" value="Login"></div>
+            </div>
         </div>
     </form>
 </body>
