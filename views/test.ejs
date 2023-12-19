@@ -1,0 +1,55 @@
+<!-- profile.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+</head>
+
+<body>
+
+  <h1>User Profile</h1>
+
+  <% if (products !== 'No Product Found') { %>
+    <h2>Products:</h2>
+    <ul>
+      <% products.forEach(product => { %>
+        <li>Name: <%= product.name %>, Description: <%= product.description %>, Price: <%= product.price %></li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No Products Found</p>
+  <% } %>
+
+  <% if (posts !== 'No Post Found') { %>
+    <h2>Posts:</h2>
+    <ul>
+      <% posts.forEach(post => { %>
+        <li>Caption: <%= post.caption %>, Post: <%= post.post %></li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No Posts Found</p>
+  <% } %>
+
+  <% if (property !== 'No Property Found') { %>
+    <h2>Property:</h2>
+    <ul>
+      <% property.forEach(prop => { %>
+        <li>Title: <%= prop.title %>, Description: <%= prop.description %>, Location: <%= prop.location %></li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No Property Found</p>
+  <% } %>
+
+  <h2>Followers Count: <%= followersCount %></h2>
+  <h2>Followings Count: <%= followingsCount %></h2>
+
+</body>
+
+</html>

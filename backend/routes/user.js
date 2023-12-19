@@ -1,5 +1,8 @@
 import express from 'express';
+import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
+import { Post } from '../models/post.js';
+import {Rental} from '../models/rental.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const router = express.Router();
@@ -19,6 +22,33 @@ router.get('/Admins', async (req, res) => {
     res.status(500).send({ message: "An Internal Error has Occurred" });
   }
 });
+
+router.get('/profile/:userId', async (req, res) => {
+  const userID = req.params.userId;
+
+  try {
+    const products = await Product.find({ userID }).select('name description price -_id');
+    const posts = await Post.find({ userId: userID }).select('caption post -_id');
+    const property = await Rental.find({ userId: userID }).select('title description location -_id');
+    const followersCount = await User.countDocuments({ userID }).select('followings');
+    const followingsCount = await User.countDocuments({ userID }).select('followers');
+
+    const responseData = {
+      products: products.length > 0 ? products : 'No Product Found',
+      posts: posts.length > 0 ? posts : 'No Post Found',
+      property: property.length > 0 ? property : 'No Property Found',
+      followersCount,
+      followingsCount
+    };
+
+    return res.status(200).json(responseData);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 
 router.get('/total' , async (req , res) => {
   try{

@@ -76,22 +76,56 @@
             align-items: center;
             margin-right : 350px;
         }
+
+        .user-data-0{
+            height : 50px;
+            width : 1fr;
+            background-color: rgb(224, 224, 224);
+            display : flex;
+            justify-content: center;
+            align-items: center;
+            margin-right : 350px;
+        }
     </style>
+    <div class="left"></div>
+
     <div class="left"></div>
 
     <div class="top">
         <div class="profile-picture"></div>
         <div class="user-data">
+            <div class="user-data-0">
+                <% if (userData && userData.userId) { %>
+                    <div><%= userData.userId %></div>
+                <% } else { %>
+                    <div>User ID not available</div>
+                <% } %>
+            </div>
             <div class="user-data-1">
-                <div>Posts</div>
-                <div>Followers</div>
-                <div>Followings</div>
+                <% if (userData && userData.followersCount) { %>
+                    <div><%= userData.followersCount %></div>
+                <% } else { %>
+                    <div>Followers count not available</div>
+                <% } %>
+                <% if (userData && userData.followingsCount) { %>
+                    <div><%= userData.followingsCount %></div>
+                <% } else { %>
+                    <div>Followings count not available</div>
+                <% } %>
             </div>
             <div class="user-data-2">
-                <div>User Name</div>
+                <% if (userData && userData.userName) { %>
+                    <div><%= userData.userName %></div>
+                <% } else { %>
+                    <div>User Name not available</div>
+                <% } %>
             </div>
         </div>
     </div>
+
+    <div class="top-1"></div>
+
+    <div class="down"></div>
 
     <div class="top-1"></div>
 
