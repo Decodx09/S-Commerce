@@ -39,13 +39,17 @@ const sqlConnection = mysql.createConnection({
 
 dotenv.config();
 
-app.get('/user-profile' , (req , res) => {
-  try{  
-    res.render('user-profile.ejs');
-  }catch{
-    res.render('error.ejs' , {error : 'Server is down babe'});
+app.get('/user-profile/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    
+    console.log('userData:', userData); // Add this line to check the userData
+
+    res.render('user-profile.ejs', { userData });
+  } catch (error) {
+    res.render('error.ejs', { error: 'Server is down babe' });
   }
-})
+});
 
 app.get('/newsfeed' , (req , res) => {
   try{

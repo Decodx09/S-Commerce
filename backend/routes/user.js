@@ -40,7 +40,7 @@ router.get('/profile/:userId', async (req, res) => {
       followersCount,
       followingsCount
     };
-
+    res.render('user-profile.ejs' , responseData);
     return res.status(200).json(responseData);
 
   } catch (error) {
@@ -78,7 +78,7 @@ router.get('/' , async (req , res) => {
         { LastName: {$regex: new RegExp(search, 'i')}}
        ]}
         , { FirstName: 1, LastName: 1, _id: 0 });
-    }else {
+    } else {
       user = await User.find();
       if(user.length === 0){
         res.status(404).send({message : 'No Users Found'});
@@ -213,7 +213,7 @@ router.put("/follow/:id", async (req, res) => {
         res.status(403).json({ message: "You already follow this user." });
       }
     } catch (err) {
-      res.status(500).json({ error: "Internal server error", message: err.message });
+      res.status(500).json({ error: "Internal Server error", message: err.message });
     }
   } else {
     res.status(403).json({ message: "You can't follow yourself." });

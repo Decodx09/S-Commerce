@@ -7,52 +7,109 @@
 </head>
 <body class="one">
     <style>
+    .one{
+        display : flex;
+        flex-direction : column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(233, 233, 233);
+    }
+
     .main{
         display : flex;
         flex-direction : column;
         text-align: center;
         justify-content: center;
         margin-top : 200px;
+        background-color: rgb(255, 255, 255);
+        height : 600px;
+        width : 440px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        border-radius: 5px;
     }
 
     .box{
         margin-top : 10px;
         margin-left : 0px;
         margin-bottom : 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: large;
     }
 
     .sbutton{
-        background-color : rgb(80, 141, 216);
+        background-color : rgb(230, 120, 125);
         color : white;
         padding: 10px 10px 10px 10px;
         border-style: none;
-        margin-top : 10px;
-        width : 300px;
+        margin-top : 4px;
+        width : 380px;
+        height : 45px;
+        border-radius : 4px;
+        font-size: 15px;
     }
 
     .ek{
-      height : 40px;
-      width : 300px;
+      height : 45px;
+      width : 380px;
       padding : 10px 10px 10px 10px;
+      margin : 5px 5px 5px 5px;
+      border-style : solid;
+      border-width : 1px;
+      border-radius : 4px;
+      color : rgb(162, 162, 162);
     }
 
     .login{
-        margin-top : 10px;
+        margin-top : 5px;
     }
 
     .class{
         display : flex;
         flex-direction : column;
     }
+
+    .lower{
+        background-color: rgb(255, 255, 255);
+        height : 40px;
+        display : flex;
+        flex-direction : row;
+        justify-content: space-between;
+        align-items: center;
+        font-family: Arial, Helvetica, sans-serif;
+        margin-bottom: 50px;
+    }
+
+    .fd{
+        margin-left : 30px;
+        color : gray;
+    }
+
+    .su{
+        margin-right : 30px;
+        color : gray;
+    }
+
+    .footer{
+        margin-top : 100px;
+    }
     </style>
     <form action="http://localhost:5554/user/login" method="post">
         <div class="class">
             <div class="main">
-                <div class="box"><input class="ek" type="text" placeholder="Email" name="email"></div>
+                <div class="box"><input class="ek" type="text" placeholder="E-mail" name="email"></div>
                 <div class="box"><input class="ek" type="text" placeholder="Password" name="password"></div>
-                <div class="box"><input class="sbutton" type="submit" value="Login"></div>
+                <div class="box"><input class="sbutton" type="submit" value="Sign in"></div>
+                <div class="lower">
+                    <div class="fd">Forgot Password?</div>
+                    <div class="su">Sign up</div>
+                </div>
             </div>
         </div>
     </form>
+
+
+    <footer class="footer">
+
+    </footer>
 </body>
 </html>
