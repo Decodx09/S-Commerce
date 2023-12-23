@@ -98,18 +98,37 @@ router.post('/:id', async (req, res) => {
     }
   });
 
-router.post('/post/:id' , async (req , res) => {
+  router.post('/post/:id', async (req, res) => {
     const { id } = req.params;
+    const user = await User.findById(id).select('FirstName');
     const post = new Post(req.body);
-    post.userId = id; 
-    try{
+    post.userId = user;
+    delete post.userId._id;
+    try {
       await post.save();
       res.status(200).send(post);
-    }catch(error){
-      console.log(error);
-      res.status(500).send({message : "Error Occurred"});
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Error Occurred" });
     }
-})
+  });
+  
+
+router.get('/post/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.find();
+    console.log(post);
+    if (!post) {
+      return res.status(404).send({ message: 'Sooo Emptyy' });
+    }
+    res.status(200).send(post);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: 'Error Occurred' });
+  }
+});
+
 
 router.delete('/post/:id' , async (req , res) => {
   const post = await Post.findById(req.params.id);

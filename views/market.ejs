@@ -1,75 +1,175 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market</title>
+    <title>Retrieve Data</title>
+    <style>
+        /* Add your styles here */
+    </style>
 </head>
 <body>
+    <div id="dataContainer"></div>
+
+    <style>
+        .main{
+            display : flex;
+            flex-direction : row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .twitter{
+            height: 240px;
+            width : 600px;
+            background-color: lightgray;
+            display : flex;
+            flex-direction : row;
+            margin-top : 10px;
+            margin-bottom : 10px;
+        }
+
+        .twitter-two{
+            height : 200px;
+            width : 510px;
+            background-color: lightseagreen;
+        }
+
+        .twitter-head{
+            height : 45px;
+            width : 510px;
+            background-color: lightcyan;
+        }
+
+        .twitter-post{
+            height : 150px;
+            width : 510px;
+            background-color: rgb(129, 231, 204);
+        }
+
+        .twitter-like{
+            height : 45px;
+            width : 510px;
+            background-color: lightskyblue;
+        }
+
+        .twitter-profile{
+            height : 60px;
+            width : 60px;
+            border-radius : 50%;
+            background-color: bisque;
+            margin-top : 10px;
+        }
+
+        .twitter-one{
+            height : 240px;
+            width : 90px;
+            background-color: lightgreen;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+        }
+
+        .feed{
+            padding : 10px 10px 10px 10px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        .twitter-head{
+            display : flex;
+            flex-direction : row;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+
+        }
+
+        .name{
+            font-weight: bold;
+            margin-left : 10px;
+        }
+        
+        .user-name{
+            margin-left : 10px;
+        }
+
+        .time{
+            margin-left : 10px;
+        }
+    </style>
+
     <style>
         .left{
             position : fixed;
             left : 0px;
             bottom : 0px;
-            top : 80px;
-            width : 270px;
-            background-color: rgb(238, 214, 214);
-        }
-
-        .top{
-            position : fixed;
-            left : 0px;
-            right : 0px;
-            top : 0px;
-            height : 100px;
-            z-index: 100;
+            width : 200px;
             background-color: lightcoral;
-        }
-
-        .one{
-            background-color: aqua;
-            height : 100;
-            width : 300px;
         }
     </style>
 
-    <div class="top">
-        <div class="one">
-        </div>
-        <div class="two"></div>
-    </div>
     <div class="left"></div>
+    <div class="right"></div>
 
-    <div class="feature" id="searchResults"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchData);
 
-    shivansh sukhija
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:5554/product/post/6572eb471d285ea2463513ab');
+                const data = await response.json();
 
-    <% if (user.products && user.products.length > 0) { %>
-        <% user.products.forEach((product, index) => { %>
-            <div class="product">
-                <div class="product-1">
-                    <img src="/Users/shivansh/Desktop/S-Commerce/kitty.jpeg" alt="">
-                    <button class="wishlist"><img src="./heart.jpeg" alt=""></button>
-                </div>
-                <div class="product-2">
-                    <div class="p-21">
-                        <div class="product-name">
-                            <p style="margin-top : 5px;"><%= product.name %></p>
-                        </div>
-                        <div class="product-desc">
-                            <p>• <%= product.description %></p>
-                        </div>
+                if (response.ok) {
+                    displayData(data);
+                } else {
+                    console.error('Error retrieving data:', data.error || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error.message);
+            }
+        }
+
+        function displayData(data) {
+            const dataContainer = document.getElementById('dataContainer');
+
+            if (Array.isArray(data) && data.length > 0) {
+                // Create HTML for each post in the array
+                const html = data.map(post => `
+                    <div class="main">
+                        <div class="twitter">
+                            <div class="twitter-one">
+                                <div class="twitter-profile"></div>
+                            </div>
+                            <div class="twitter-two">
+                                <div class="twitter-head">
+                                    <div class="name">${post.userId.FirstName}</div>
+                                    <div class="user-name">@shivanshsukhija</div>
+                                    <div class="time">${post.liveTime}</div>
+                                </div>
+                                <div class="twitter-post">
+                                    <div class="feed">${post.post}</div>
+                                </div>
+                                <div class="twitter-like"></div>
+                            </div>
+                        </div> 
                     </div>
-                    <div class="p-22">
-                        <button class="fuck">$<%= product.price %></button>
-                        <button class="fuck2">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-        <% }); %>
-    <% } else { %>
-        <p>No profile data found</p>
-    <% } %>
+                `).join('');
 
+                dataContainer.innerHTML = html;
+            } else {
+                console.error('Unexpected data structure:', data);
+                dataContainer.innerHTML = '<p>Error: Unexpected data structure</p>';
+            }
+        }
+
+        function updateLiveTime(data) {
+            data.forEach(post => {
+                const liveTimeElement = document.getElementById(`liveTime`);
+                if (liveTimeElement) {
+                    liveTimeElement.textContent = post.liveTime;
+                }
+            });
+        }
+    </script>
 </body>
 </html>
