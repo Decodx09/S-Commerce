@@ -83,6 +83,26 @@ app.get('/search' , (req , res) => {
   }
 })
 
+app.get('/market/:userId' , async (req , res) => {
+  const userId = req.params.userId;
+  try{
+    const response = await axios.get(`http://localhost:5554/product/post/${userId}`);
+    console.log(response);
+    if (response.data.products && response.data.products.length > 0) {
+      const profile = response.data. products[0];
+      res.render('market.ejs', { user: response.data, profile: profile });
+    } else {
+      res.render('error.ejs', { error: 'No profile data found' });
+    }
+  }catch(error){
+    if (error.code === 'ECONNRESET') {
+      res.render('error.ejs', { error: 'Connection to the Server was reset' });
+    } else {
+      res.render('error.ejs', { error: 'An error occurred while fetching data' });
+    }
+  }
+})
+
 app.get('/profile/:userId', async (req, res) => {
   const userId = req.params.userId;
   try {
@@ -105,7 +125,7 @@ app.get('/profile/:userId', async (req, res) => {
 
 app.get('/market', async (req, res) => {
   try {
-    const response = await axios.get('http://localhost:5554/product/');
+    const response = await axios.get('http://localhost:5554/product/post/6572eb471d285ea2463513ab');
     console.log('Response Data:', response.data);
     if (response.data && response.data.length > 0) {
       const products = response.data[0];
