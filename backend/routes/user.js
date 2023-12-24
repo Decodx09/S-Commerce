@@ -2,7 +2,7 @@ import express from 'express';
 import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 import { Post } from '../models/post.js';
-import {Rental} from '../models/rental.js';
+import { Rental } from '../models/rental.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const router = express.Router();

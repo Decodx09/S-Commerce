@@ -9,9 +9,13 @@
     </style>
 </head>
 <body>
-    <div id="dataContainer"></div>
+    <div class="container" id="dataContainer"></div>
 
     <style>
+        .container{
+            margin-top : 200px;
+        }
+
         .main{
             display : flex;
             flex-direction : row;
@@ -108,6 +112,45 @@
         }
     </style>
 
+    <style>
+        .post{
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+            position : fixed;
+            top : 0px;
+            left : 540px;
+            height : 200px;
+            width : 600px;
+            background-color: lavender;
+        }
+
+        .ek{
+            height : 50px;
+            width : 450px;
+            padding-left : 15px;
+            border-style : none;
+            /* background-color: lavender; */
+        }
+
+        .sbutton{
+            height : 50px;
+            width : 80px;
+        }
+
+        .box{
+            margin-left : 10px;
+        }
+    </style>
+
+    <form action="http://localhost:5554/product/post/6566fe32a82c2a092b626052" method="post">
+        <div class="post">
+            <div class="box"><input class="ek" type="text" placeholder="What is happening ?" name="post"></div>
+            <div class="box"><input class="sbutton" type="submit" value="Post"></div>
+        </div>
+    </form>
+
     <div class="left"></div>
     <div class="right"></div>
 
@@ -143,8 +186,8 @@
                             <div class="twitter-two">
                                 <div class="twitter-head">
                                     <div class="name">${post.userId.FirstName}</div>
-                                    <div class="user-name">@shivanshsukhija</div>
-                                    <div class="time">${post.liveTime}</div>
+                                    <div class="user-name">@${post.userId.FirstName}</div>
+                                    <div class="time" id="liveTime">${post.liveTime}</div>
                                 </div>
                                 <div class="twitter-post">
                                     <div class="feed">${post.post}</div>
