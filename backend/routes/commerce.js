@@ -77,7 +77,7 @@ router.get('/checkout/:id' , async (req, res) => {
     if (!user) {
       res.status(404).send({ message: "User Not Found" });
     } else {
-      res.status(200).send(user.checkout);
+      res.status(200).send(user.items);
     }
   } catch (error) {
     console.log(error);
