@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
-        APP_NAME = "SocialCommerce-CICD"
+        APP_NAME = "socialcommerce-cicd"
         RELEASE = "1.0.0"
         DOCKER_USER = "shivanshsukhija"
         DOCKER_PASS = 'dockerhub'
