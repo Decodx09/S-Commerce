@@ -31,17 +31,4 @@ pipeline {
         }
         // Add similar echo statements for other stages
     }
-    post {
-        always {
-            echo "Post-build actions..."
-            emailext attachLog: true,
-                subject: "'${currentBuild.result}'",
-                body: "Project: ${env.JOB_NAME}<br/>" +
-                    "Build Number: ${env.BUILD_NUMBER}<br/>" +
-                    "URL: ${env.BUILD_URL}<br/>",
-                to: 'sukhija.shivansh@gmail.com',
-                attachmentsPattern: 'trivyfs.txt'
-            echo "Post-build actions completed."
-        }
-    }
 }
