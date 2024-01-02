@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socialcommerce-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: socialcommerce-app
+  template:
+    metadata:
+      labels:
+        app: socialcommerce-app
+    spec:
+      containers:
+        - name: socialcommerce-app
+          image: shivanshsukhija/socialcommerce-cicd:latest
+          resources:
+            limits:
+              cpu: "1"
+            requests:
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
