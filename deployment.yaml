@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: socialcommerce-app
-          image: shivanshsukhija/socialcommerce-cicd:latest
+          image: shivanshsukhija/socialcommerce-cicd:1.0.0-16
           resources:
             limits:
               cpu: "1"
