@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: socialcommerce-deployment
+  name: reddit-clone-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: socialcommerce-app
+      app: reddit-clone-app
   template:
     metadata:
       labels:
-        app: socialcommerce-app
+        app: reddit-clone-app
     spec:
       containers:
-        - name: socialcommerce-app
-          image: shivanshsukhija/socialcommerce-cicd:1.0.0-16
+        - name: reddit-clone-app
+          image: ashfaque9x/reddit-clone-pipeline:1.0.0-11
           resources:
             limits:
               cpu: "1"
