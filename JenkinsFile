@@ -32,15 +32,15 @@ pipeline {
         stage("Sonarqube Analysis") {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=SocialCommerce-CICD\
-                    -Dsonar.projectKey=SocialCommerce-CICD'''
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=shivansh-CICD\
+                    -Dsonar.projectKey=shivansh-CICD'''
                 }
             }
         }
         stage("Quality Gate") {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-Token1'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-Token'
                 }
             }
         }
