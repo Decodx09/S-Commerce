@@ -117,7 +117,7 @@ router.get('/post/:id', async (req, res) => {
     if (!post) {
       return res.status(404).send({ message: 'Sooo Emptyy' });
     }
-    res.status(200).send(post);
+    res.status(200).send(post.reverse());
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'Error Occurred' });

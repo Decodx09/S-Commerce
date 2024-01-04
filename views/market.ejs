@@ -55,6 +55,10 @@
             height : 45px;
             width : 510px;
             background-color: lightskyblue;
+            justify-content: space-between;
+            display : flex;
+            flex-direction: row;
+            width : 1fr 1fr 1fr;
         }
 
         .twitter-profile{
@@ -99,6 +103,42 @@
 
         .time{
             margin-left : 10px;
+        }
+
+        .o{
+            background-color: lightcoral;
+            height : 45px;
+            width : 200px;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .t{
+            background-color: lightblue;
+            height : 45px;
+            width : 200px;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .th{
+            background-color: lightsalmon;
+            height : 45px;
+            width : 200px;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .block{
+            height : 20px;
+            width : 40px;
+            background-color: azure;
         }
     </style>
 
@@ -150,6 +190,37 @@
         }
     </style>
 
+    <!-- <div class="main">
+        <div class="twitter">
+            <div class="twitter-one">
+                <div class="twitter-profile"></div>
+            </div>
+            <div class="twitter-two">
+                <div class="twitter-head">
+                    <div class="name">${post.userId.FirstName}</div>
+                    <div class="user-name">@${post.userId.FirstName}</div>
+                    <div class="time" id="liveTime">${post.liveTime}</div>
+                </div>
+                <div class="twitter-post">
+                    <div class="feed">${post.post}</div>
+                </div>
+                <div class="twitter-like">
+                    <div class="o">
+                        <div class="block">
+                            <button>Like</button>
+                        </div>
+                    </div>
+                    <div class="t">
+                        <div class="block"></div>
+                    </div>
+                    <div class="th">
+                        <div class="block"></div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div> -->
+
     <form action="http://localhost:5554/product/post/6566fe32a82c2a092b626052" method="post">
         <div class="post">
             <div class="box"><input class="ek" type="text" placeholder="What is happening ?" name="post"></div>
@@ -184,24 +255,36 @@
             if (Array.isArray(data) && data.length > 0) {
                 // Create HTML for each post in the array
                 const html = data.map(post => `
-                    <div class="main">
-                        <div class="twitter">
-                            <div class="twitter-one">
-                                <div class="twitter-profile"></div>
+                            <div class="main">
+                    <div class="twitter">
+                        <div class="twitter-one">
+                            <div class="twitter-profile"></div>
+                        </div>
+                        <div class="twitter-two">
+                            <div class="twitter-head">
+                                <div class="name">${post.userId.FirstName}</div>
+                                <div class="user-name">@${post.userId.FirstName}</div>
+                                <div class="time" id="liveTime">${post.liveTime}</div>
                             </div>
-                            <div class="twitter-two">
-                                <div class="twitter-head">
-                                    <div class="name">${post.userId.FirstName}</div>
-                                    <div class="user-name">@${post.userId.FirstName}</div>
-                                    <div class="time" id="liveTime">${post.liveTime}</div>
-                                </div>
-                                <div class="twitter-post">
-                                    <div class="feed">${post.post}</div>
-                                </div>
-                                <div class="twitter-like"></div>
+                            <div class="twitter-post">
+                                <div class="feed">${post.post}</div>
                             </div>
-                        </div> 
-                    </div>
+                            <div class="twitter-like">
+                                <div class="o">
+                                    <div class="block">
+                                        <button>Like</button>
+                                    </div>
+                                </div>
+                                <div class="t">
+                                    <div class="block"></div>
+                                </div>
+                                <div class="th">
+                                    <div class="block"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
                 `).join('');
 
                 dataContainer.innerHTML = html;
