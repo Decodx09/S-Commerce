@@ -151,7 +151,6 @@
             background-color: lightcoral;
         }
     </style>
-
     <style>
         .post{
             display : flex;
@@ -255,6 +254,33 @@
             if (Array.isArray(data) && data.length > 0) {
                 // Create HTML for each post in the array
                 const html = data.map(post => `
+                    <div class="main">
+                        <div class="twitter">
+                            <div class="twitter-one">
+                                <div class="twitter-profile"></div>
+                            </div>
+                            <div class="twitter-two">
+                                <div class="twitter-head">
+                                    <div class="name">${post.userId.FirstName}</div>
+                                    <div class="user-name">@shivanshsukhija</div>
+                                    <div class="time">${post.liveTime}</div>
+                                </div>
+                                <div class="twitter-post">
+                                    <div class="feed">${post.post}</div>
+                                </div>
+                                <div class="twitter-like"></div>
+                            </div>
+                        </div> 
+                    </div>
+                `).join('');
+
+                dataContainer.innerHTML = html;
+            } else {
+                console.error('Unexpected data structure:', data);
+                dataContainer.innerHTML = '<p>Error: Unexpected data structure</p>';
+            }
+        }
+
                             <div class="main">
                     <div class="twitter">
                         <div class="twitter-one">
