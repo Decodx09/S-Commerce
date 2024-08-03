@@ -2,7 +2,7 @@ import express from 'express';
 import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 import { Post } from '../models/post.js';
-import {Rental} from '../models/rental.js';
+import { Rental } from '../models/rental.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const router = express.Router();
@@ -54,7 +54,7 @@ router.get('/total' , async (req , res) => {
   try{
     const user = await User.aggregate([
       {$match : {Admin: true}},
-      {$group : {_id : null , Admins : {$sum : "$Admins"}}}
+      {$group : {_id : null , Admins : {$sum : "2"}}}
     ]);
     if(user.length > 0){
       res.status(200).send(user[0]);
@@ -210,7 +210,15 @@ router.put("/follow/:id", async (req, res) => {
 
         res.status(200).json({ message: "User has been followed." });
       } else {
-        res.status(403).json({ message: "You already follow this user." });
+        await User.findOneAndUpdate(
+          {_id : req.params.id},
+          { $pull : {followers : req.body._id}}
+        );
+        await User.findOneAndUpdate(
+          {_id : req.body._id},
+          { $pull : {followings : req.params.id}}
+        );
+        // res.status(403).json({ message: "You already follow this user." });
       }
     } catch (err) {
       res.status(500).json({ error: "Internal Server error", message: err.message });

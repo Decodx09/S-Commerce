@@ -9,9 +9,13 @@
     </style>
 </head>
 <body>
-    <div id="dataContainer"></div>
+    <div class="container" id="dataContainer"></div>
 
     <style>
+        .container{
+            margin-top : 200px;
+        }
+
         .main{
             display : flex;
             flex-direction : row;
@@ -51,11 +55,15 @@
             height : 45px;
             width : 510px;
             background-color: lightskyblue;
+            justify-content: space-between;
+            display : flex;
+            flex-direction: row;
+            width : 1fr 1fr 1fr;
         }
 
         .twitter-profile{
-            height : 60px;
-            width : 60px;
+            height : 70px;
+            width : 70px;
             border-radius : 50%;
             background-color: bisque;
             margin-top : 10px;
@@ -96,6 +104,42 @@
         .time{
             margin-left : 10px;
         }
+
+        .o{
+            background-color: lightcoral;
+            height : 45px;
+            width : 200px;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .t{
+            background-color: lightblue;
+            height : 45px;
+            width : 200px;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .th{
+            background-color: lightsalmon;
+            height : 45px;
+            width : 200px;
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .block{
+            height : 20px;
+            width : 40px;
+            background-color: azure;
+        }
     </style>
 
     <style>
@@ -107,6 +151,81 @@
             background-color: lightcoral;
         }
     </style>
+    <style>
+        .post{
+            display : flex;
+            flex-direction : row;
+            justify-content: center;
+            align-items: center;
+            position : fixed;
+            top : 0px;
+            left : 540px;
+            height : 200px;
+            width : 600px;
+            background-color: lavender;
+        }
+
+        .ek{
+            height : 50px;
+            width : 450px;
+            padding-left : 15px;
+            border-style : none;
+            border-radius : 5px;
+            /* background-color: lavender; */
+        }
+
+        .sbutton{
+            height : 50px;
+            width : 80px;
+            border-style : none;
+            color : rgb(255, 255, 255);
+            background-color: rgb(162, 216, 216);
+            font-weight: bold;
+            border-radius : 5px;
+        }
+
+        .box{
+            margin-left : 10px;
+        }
+    </style>
+
+    <!-- <div class="main">
+        <div class="twitter">
+            <div class="twitter-one">
+                <div class="twitter-profile"></div>
+            </div>
+            <div class="twitter-two">
+                <div class="twitter-head">
+                    <div class="name">${post.userId.FirstName}</div>
+                    <div class="user-name">@${post.userId.FirstName}</div>
+                    <div class="time" id="liveTime">${post.liveTime}</div>
+                </div>
+                <div class="twitter-post">
+                    <div class="feed">${post.post}</div>
+                </div>
+                <div class="twitter-like">
+                    <div class="o">
+                        <div class="block">
+                            <button>Like</button>
+                        </div>
+                    </div>
+                    <div class="t">
+                        <div class="block"></div>
+                    </div>
+                    <div class="th">
+                        <div class="block"></div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div> -->
+
+    <form action="http://localhost:5554/product/post/6566fe32a82c2a092b626052" method="post">
+        <div class="post">
+            <div class="box"><input class="ek" type="text" placeholder="What is happening ?" name="post"></div>
+            <div class="box"><input class="sbutton" type="submit" value="Post"></div>
+        </div>
+    </form>
 
     <div class="left"></div>
     <div class="right"></div>
@@ -153,6 +272,45 @@
                             </div>
                         </div> 
                     </div>
+                `).join('');
+
+                dataContainer.innerHTML = html;
+            } else {
+                console.error('Unexpected data structure:', data);
+                dataContainer.innerHTML = '<p>Error: Unexpected data structure</p>';
+            }
+        }
+
+                            <div class="main">
+                    <div class="twitter">
+                        <div class="twitter-one">
+                            <div class="twitter-profile"></div>
+                        </div>
+                        <div class="twitter-two">
+                            <div class="twitter-head">
+                                <div class="name">${post.userId.FirstName}</div>
+                                <div class="user-name">@${post.userId.FirstName}</div>
+                                <div class="time" id="liveTime">${post.liveTime}</div>
+                            </div>
+                            <div class="twitter-post">
+                                <div class="feed">${post.post}</div>
+                            </div>
+                            <div class="twitter-like">
+                                <div class="o">
+                                    <div class="block">
+                                        <button>Like</button>
+                                    </div>
+                                </div>
+                                <div class="t">
+                                    <div class="block"></div>
+                                </div>
+                                <div class="th">
+                                    <div class="block"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
                 `).join('');
 
                 dataContainer.innerHTML = html;

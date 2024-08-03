@@ -43,7 +43,7 @@
         border-style: none;
         margin-top : 4px;
         width : 380px;
-        height : 45px;
+        height : 50px;
         border-radius : 4px;
         font-size: 15px;
     }
@@ -112,6 +112,40 @@
 
     <footer class="footer">
 
+        <script>
+            function validateForm(event) {
+                // Prevent the form from submitting by default
+                event.preventDefault();
+    
+                // Get values from the form
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+    
+                // Regular expressions for validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    
+                // Reset error messages
+                document.getElementById('emailError').textContent = '';
+                document.getElementById('passwordError').textContent = '';
+    
+                // Validate email
+                if (!emailRegex.test(email)) {
+                    document.getElementById('emailError').textContent = 'Invalid email format';
+                    return;
+                }
+    
+                // Validate password
+                if (!passwordRegex.test(password)) {
+                    document.getElementById('passwordError').textContent = 'Password must have at least 8 characters, one uppercase letter, one lowercase letter, and one digit';
+                    return;
+                }
+    
+                // If validation passes, you can proceed with submitting the form or any other action
+                // For example, you can submit the form programmatically:
+                // document.getElementById('loginForm').submit();
+            }
+    </script>
     </footer>
 </body>
 </html>

@@ -1,0 +1,87 @@
+pipeline {
+    agent any
+    tools {
+        jdk 'jdk17'
+        nodejs 'node20'
+    }
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+        APP_NAME = "shivansh-cicd"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "shivanshsukhija"
+        DOCKER_PASS = 'dockerhub'
+        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        // JENKINS_API_TOKEN = credentials('JENKINS_API_TOKEN')
+    }
+    stages {
+        stage('clean workspace') {
+            steps {
+                echo "Cleaning workspace..."
+                cleanWs()
+                echo "Workspace cleaned."
+            }
+        }
+        stage('Checkout from Git') {
+            steps {
+                echo "Checking out from Git..."
+                git branch: 'main', url: 'https://github.com/Decodx09/S-Commerce.git'
+                echo "Checked out from Git."
+            }
+        }
+        stage("Sonarqube Analysis") {
+            steps {
+                withSonarQubeEnv('SonarQube-Server') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=shivansh-CICD\
+                    -Dsonar.projectKey=shivansh-CICD'''
+                }
+            }
+        }
+        stage("Quality Gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-Token'
+                }
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh "npm install"
+            }
+        }
+        stage('TRIVY FS SCAN') {
+            steps {
+                sh "trivy fs . > trivyfs.txt"
+            }
+        }
+        stage("Build & Push Docker Image") {
+            steps {
+                script {
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
+            }
+        }
+        stage("Trivy Image Scan") {
+            steps {
+                script {
+                sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image shivanshsukhija/socialcommerce-cicd:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table > trivyimage.txt')
+                    }
+            }
+        }
+        stage ('Cleanup Artifacts') {
+            steps {
+                script {
+                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rmi ${IMAGE_NAME}:latest"
+                }
+            }
+         }
+        // Add similar echo statements for other stages
+    }
+}

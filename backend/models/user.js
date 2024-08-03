@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     items : [{type: mongoose.Schema.Types.ObjectId, ref:'Product'}],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     followings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    checkout : {type: Number, required : false},
+    checkout : {type: [Number], required : false},
 });
 
 // userSchema.virtual('id').get(function () {

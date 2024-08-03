@@ -3,21 +3,22 @@ import { Product } from '../models/product.js';
 import { User } from '../models/user.js';
 import { Post } from '../models/post.js';
 import { OrderItem } from '../models/orderitem.js';
-import {Rental} from '../models/rental.js';
+import { Rental } from '../models/rental.js';
 
 const router = express.Router();
 
-router.post('/addtocart/:id' , async (req, res) => {
+router.post('/addtocart/:id', async (req, res) => {
   const userId = req.params.id;
   const productId = req.body.item;
   const quantity = parseInt(req.query.quantity, 10);
-  
+
   try {
     console.log("Received userId:", userId);
     console.log("Received productId:", productId);
+    console.log("Received quantity:", quantity);
 
-    if (isNaN(quantity) || quantity <= 0) {
-      return res.status(400).json({ error: "Invalid Quantity" });
+    if (!productId || isNaN(quantity) || quantity <= 0) {
+      return res.status(400).json({ error: "Invalid Product ID or Quantity" });
     }
 
     const user = await User.findById(userId);
@@ -33,40 +34,34 @@ router.post('/addtocart/:id' , async (req, res) => {
     }
 
     const price = product.price;
+    const totalPrice = price * quantity;
 
-    console.log("Price:", price);
-    console.log("Quantity:", quantity);
+    // Check if the product is already in the user's cart
+    const existingCartItem = user.items.find(item => item._id.equals(productId));
 
-    const totalPrice = (price * quantity);
-
-    // Create a new OrderItem and save it to obtain the _id
-    const newOrderItem = new OrderItem({
-      quantity: quantity,
-      product: productId,
-    });
-
-    const orderItemResolved = await newOrderItem.save();
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        $inc: { cart: 1 },
-        $push: { items: orderItemResolved._id },
-        $addToSet: { checkout: totalPrice },
-      },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.sendStatus(404);
+    if (existingCartItem) {
+      existingCartItem.quantity += quantity;
     } else {
-      return res.status(200).json({ totalPrice });
+      // Create a new OrderItem and save it to obtain the _id
+      const newOrderItem = new OrderItem({
+        quantity: quantity,
+        product: product.name,
+      });
+      user.items.push(newOrderItem);
     }
+    console.log(product.name);
+    user.cart += quantity;
+    user.checkout.addToSet(totalPrice);
+
+    await user.save();
+
+    return res.status(200).json({ totalPrice });
   } catch (error) {
     console.error(error);
     return res.status(500).send("An Internal Server Error has Occurred");
   }
 });
+
 
 // Function to check if a string is a valid MongoDB ObjectId
 
@@ -77,7 +72,7 @@ router.get('/checkout/:id' , async (req, res) => {
     if (!user) {
       res.status(404).send({ message: "User Not Found" });
     } else {
-      res.status(200).send(user.checkout);
+      res.status(200).send(user.items);
     }
   } catch (error) {
     console.log(error);
@@ -122,7 +117,7 @@ router.get('/post/:id', async (req, res) => {
     if (!post) {
       return res.status(404).send({ message: 'Sooo Emptyy' });
     }
-    res.status(200).send(post);
+    res.status(200).send(post.reverse());
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: 'Error Occurred' });
